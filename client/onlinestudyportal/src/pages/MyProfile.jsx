@@ -1,7 +1,8 @@
 import { useState } from "react";
-
+import { useAuth } from "../store/auth";
 const Profile = () => {
-
+  const {user} = useAuth();
+  console.log("user:",user);
   // ===============================
   // PROFILE STATE (Frontend only)
   // Later connect to backend API

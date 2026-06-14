@@ -13,7 +13,9 @@ import Logout from "./pages/Logout";
 import MyProfile from "./pages/MyProfile";
 import Error from "./pages/Error";
 
-// import AdminProtected from "./routes/AdminProtected";
+// protectroutes files
+import ProtectedRoutes from "./components/Protected-Routes";
+import AdminProtectedRoute from "./components/admincomponents/Admin-Protected-Routes";
 
 // admin pages
 import Alogin from "./pages/adminpages/Alogin";
@@ -33,14 +35,21 @@ const App = ()=>{
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/myprofile" element={<MyProfile />} />
+          <Route element={<ProtectedRoutes/>}>
+            <Route path="/myprofile" element={<MyProfile />} />
+          </Route>
         </Route>
 
         {/* Admin Routes */}
         <Route element={<AdminLayout />}>
+          <Route element={<AdminProtectedRoute/>}>
           <Route path="/admin/dashboard" element={<Adashboard />} />
           <Route path="/admin/courses" element={<Acourses />} />
           <Route path="/admin/notices" element={<ANotices />} />
+          </Route>
+          {/* <Route path="/admin/users" element={<Ausers />} /> */}
+          {/* <Route path="/admin/feedback" element={<Afeedback />} /> */}
+          {/* <Route path="/admin/profile" element={<Aprofile />} /> */}
         </Route>
 
         <Route path="/admin/login" element={<Alogin />} />

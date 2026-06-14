@@ -39,6 +39,9 @@ const Anavbar = () => {
             <NavLink to="/admin/feedback" className="hover:text-blue-600">
               Feedback
             </NavLink>
+            <NavLink to="/admin/logout" className="hover:text-blue-600">
+              Logout
+            </NavLink>
             
           </nav>
 
@@ -72,6 +75,7 @@ const Anavbar = () => {
               <NavLink to="/admin/notices" className='hover:text-blue-600'>Notices</NavLink>
               <NavLink to="/admin/user" className='hover:text-blue-600'>Users</NavLink>
               <NavLink to="/admin/feedback" className='hover:text-blue-600'>Feedback</NavLink>
+              <NavLink to="/admin/logout" className='hover:text-blue-600'>Logout</NavLink>
 
               <div className="flex items-center gap-3 pt-2 border-t">
                 <img
