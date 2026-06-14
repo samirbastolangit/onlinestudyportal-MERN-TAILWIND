@@ -1,5 +1,5 @@
-import {BrowserRouter, Routes, Route} from "react-router-dom";
-
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { useAuth } from "./store/auth";
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
@@ -24,6 +24,7 @@ import Acourses from "./pages/adminpages/Acourses";
 import ANotices from "./pages/adminpages/Anotices";
 
 const App = ()=>{
+  const {isLoggedIn} = useAuth();
   return <>
   <BrowserRouter>
     {/* User Routes */}
@@ -32,9 +33,15 @@ const App = ()=>{
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/notices" element={<Notices />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
+          {!isLoggedIn && (
+            <>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            </>
+          )}
+          {isLoggedIn && (
+            <Route path="/logout" element={<Logout />} />
+          )}
           <Route element={<ProtectedRoutes/>}>
             <Route path="/myprofile" element={<MyProfile />} />
           </Route>
@@ -43,6 +50,13 @@ const App = ()=>{
         {/* Admin Routes */}
         <Route element={<AdminLayout />}>
           <Route element={<AdminProtectedRoute/>}>
+          <Route path="/login" element={<Navigate to='/admin/dashboard' replace/>}/>
+          <Route path="/register" element={<Navigate to='/admin/dashboard' replace/>}/>
+          <Route path="/admin/login" element={<Navigate to='/admin/dashboard' replace/>}/>
+          {/* <Route path="/courses" element={<Navigate to='/admin/courses' replace/>}/>
+          <Route path="/notices" element={<Navigate to='/admin/notices' replace/>}/>
+          <Route path="/" element={<Navigate to='/admin/dashboard' replace/>}/>
+           */}
           <Route path="/admin/dashboard" element={<Adashboard />} />
           <Route path="/admin/courses" element={<Acourses />} />
           <Route path="/admin/notices" element={<ANotices />} />
