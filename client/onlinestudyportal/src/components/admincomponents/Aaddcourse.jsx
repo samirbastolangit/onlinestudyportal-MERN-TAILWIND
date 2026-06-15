@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
+const pcourseuri = "http://localhost:3000/api/courses/admin/pcourses";
+import { useAuth } from "../../store/auth";
 
-const AddCourse = ({ onClose }) => {
+const AddCourse = ({ onClose, refreshCourses }) => {
+  const {token} = useAuth();
   const [formData, setFormData] = useState({
     thumbnail: null,
     title: "",
@@ -23,13 +26,29 @@ const AddCourse = ({ onClose }) => {
         ...formData,
         [name]: value,
       });
+  }};
+
+  const handleSubmit = async (e) => {
+    try { 
+      e.preventDefault();
+      const response = await fetch(pcourseuri,{
+        method:"POST",
+        headers:{
+          Authorization :`Bearer ${token}`,
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify(formData)
+      });
+      if(response.ok){
+        const data = await response.json();
+        console.log(data.message);
+        onClose();
+        refreshCourses();
+      }
+    } 
+    catch (error) {
+      console.error(error);
     }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log(formData);
 
     // Backend Example
     // const data = new FormData();
@@ -160,8 +179,6 @@ const AddCourse = ({ onClose }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-              <div>
-
                 <label className="font-semibold block mb-2">
                   Duration
                 </label>
@@ -198,10 +215,6 @@ const AddCourse = ({ onClose }) => {
 
             </div>
 
-          </div>
-
-        </form>
-
         {/* Footer */}
         <div className="border-t bg-gray-50 p-4 flex flex-col sm:flex-row justify-end gap-3 flex-shrink-0">
 
@@ -209,22 +222,23 @@ const AddCourse = ({ onClose }) => {
             type="button"
             onClick={onClose}
             className="px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400"
-          >
+            >
             Cancel
           </button>
 
           <button
-            onClick={handleSubmit}
+            type="submit"
             className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
-          >
+            >
             Add Course
           </button>
 
         </div>
-
+            </form>
       </div>
-
     </div>
+
+
   );
 };
 
