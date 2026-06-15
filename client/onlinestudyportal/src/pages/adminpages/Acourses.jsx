@@ -1,61 +1,65 @@
 // Acourses.jsx
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import AddCourse from "../../components/admincomponents/Aaddcourse";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import UpdateCourse from "../../components/admincomponents/Aupdatecourse";
+const getcourseuri = "http://localhost:3000/api/courses/";
+const rcourseuri = "http://localhost:3000/api/courses/admin/rcourses/";
 
+import { useAuth } from "../../store/auth";
 const Acourses = () => {
-
-        const [showAddCourse, setShowAddCourse] = useState(false);
-  // Dummy Data
-  const courses = [
-    {
-      id: 1,
-      thumbnail:
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600",
-      title: "Full Stack Web Development",
-      description:
-        "Learn HTML, CSS, JavaScript, React, Node.js, Express, and MongoDB from beginner to advanced.",
-      duration: "6 Months",
-      fee: "Rs. 15,000",
-    },
-    {
-      id: 2,
-      thumbnail:
-        "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600",
-      title: "Python Programming",
-      description:
-        "Master Python with projects, automation, data structures, and backend development.",
-      duration: "4 Months",
-      fee: "Rs. 10,000",
-    },
-    {
-      id: 3,
-      thumbnail:
-        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600",
-      title: "UI/UX Design",
-      description:
-        "Learn Figma, wireframing, prototyping, and modern UI design principles.",
-      duration: "3 Months",
-      fee: "Rs. 8,500",
-    },
-  ];
-
-  const deleteCourse = (id) => {
-    // fetch(`/api/course/${id}`,{
-    //   method:"DELETE"
-    // })
-    console.log("Delete Course :", id);
+        const {token} = useAuth();
+        //function to fetch all courses
+        const [courses,setCourses] = useState([]);
+        const getCourses = async ()=>{
+          try {
+            const response = await fetch(getcourseuri,{
+              method:"GET"
+      });
+      if(response.ok){
+        const data = await response.json();
+        setCourses(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  useEffect(() => {
+    getCourses();
+  }, []);
+  
+  //delete course function
+  const deleteCourse = async (id) => {
+    try {
+      const response = await fetch(`${rcourseuri}${id}`,{
+        method:"DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      if(response.ok){
+        const msg = await response.json();
+        console.log(msg.message);
+        getCourses();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  const updateCourse = (id) => {
-    // Open update component/modal here
-    console.log("Update Course :", id);
+  
+  //update course function
+  const [showUpdateCourse, setShowUpdateCourse] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  
+  const updateCourse = (course) => {
+  setSelectedCourse(course);
+  setShowUpdateCourse(true);
   };
-
-  const addCourse = () => {
-    // Navigate/Open Add Course Component
-    console.log("Add Course");
-  };
+  
+  //add course function
+  const [showAddCourse, setShowAddCourse] = useState(false);
+  
 
   return (
     <div className="min-h-screen bg-gray-100 p-5 mt-[80px]">
@@ -79,7 +83,9 @@ const Acourses = () => {
           Add Course
         </button>
         {showAddCourse && (
-  <AddCourse onClose={() => setShowAddCourse(false)} />
+  <AddCourse 
+  onClose={() => setShowAddCourse(false)}
+  refreshCourses={getCourses} />
 )}
       </div>
 
@@ -88,7 +94,7 @@ const Acourses = () => {
 
         {courses.map((course) => (
           <div
-            key={course.id}
+            key={course._id}
             className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 overflow-hidden"
           >
             <img
@@ -122,15 +128,23 @@ const Acourses = () => {
               <div className="flex gap-3">
 
                 <button
-                  onClick={() => updateCourse(course.id)}
+                  onClick={() => updateCourse(course)}
                   className="flex-1 flex justify-center items-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition"
                 >
                   <FaEdit />
                   Update
                 </button>
-
+{
+  showUpdateCourse && (
+    <UpdateCourse
+      course={selectedCourse}
+      onClose={() => setShowUpdateCourse(false)}
+      refreshCourses={getCourses}
+    />
+  )
+}
                 <button
-                  onClick={() => deleteCourse(course.id)}
+                  onClick={() => deleteCourse(course._id)}
                   className="flex-1 flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition"
                 >
                   <FaTrash />

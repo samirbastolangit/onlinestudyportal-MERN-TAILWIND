@@ -22,7 +22,7 @@ const Courses = () => {
         setCourseData(data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   // Fetch only once when component mounts

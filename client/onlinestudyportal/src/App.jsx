@@ -56,7 +56,7 @@ const App = ()=>{
           {/* <Route path="/courses" element={<Navigate to='/admin/courses' replace/>}/>
           <Route path="/notices" element={<Navigate to='/admin/notices' replace/>}/>
           <Route path="/" element={<Navigate to='/admin/dashboard' replace/>}/>
-           */}
+           */} 
           <Route path="/admin/dashboard" element={<Adashboard />} />
           <Route path="/admin/courses" element={<Acourses />} />
           <Route path="/admin/notices" element={<ANotices />} />
