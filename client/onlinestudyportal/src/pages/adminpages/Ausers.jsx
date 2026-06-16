@@ -1,0 +1,107 @@
+import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { useState, useEffect } from "react";
+const getalluseruri = "http://localhost:3000/api/users/admin/users";
+const ruseruri = "http://localhost:3000/api/users/admin/deleteuserac/";
+
+import { useAuth } from "../../store/auth";
+const Ausers = () => {
+        const {token} = useAuth();
+        //function to fetch all users
+        const [users,setUsers] = useState([]);
+        const getUsers = async ()=>{
+          try {
+            const response = await fetch(getalluseruri,{
+              method:"GET",
+              headers:{
+                Authorization:`Bearer ${token}`
+              }
+      });
+      if(response.ok){
+        const data = await response.json();
+        setUsers(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  useEffect(() => {
+    getUsers();
+  }, []);
+  
+  //delete user function
+  const deleteUser = async (id) => {
+    try {
+      const response = await fetch(`${ruseruri}${id}`,{
+        method:"DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      if(response.ok){
+        const msg = await response.json();
+        console.log(msg.message);
+        getUsers();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };  
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-5 mt-[80px]">
+
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">
+            Manage Users
+          </h1>
+          <p className="text-gray-500">
+            View and Delete existing Users.
+          </p>
+        </div>
+      </div>
+
+      {/* Users Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+        {users.map((user) => (
+          <div
+            key={user._id}
+            className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 overflow-hidden p-5"
+          >
+            {/* <img
+              src={user.thumbnail}
+              alt={user.title}
+              className="w-full h-52 object-cover"
+            /> */}
+
+            <div >
+
+              <h2 className="text-xl font-bold text-gray-800 mb-2">
+                {user.fullname}
+              </h2>
+
+              <p className="text-blue-600 text-sm mb-4 line-clamp-3">
+                {user.email}
+              </p>
+                </div>
+
+                <button
+                  onClick={() => deleteUser(user._id)}
+                  className="flex-1 flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition"
+                >
+                  <FaTrash />
+                  Delete
+                </button>
+
+              </div>
+        ))}
+
+      </div>
+    </div>
+  );
+};
+
+export default Ausers;

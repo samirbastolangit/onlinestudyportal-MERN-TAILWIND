@@ -26,35 +26,7 @@ const addNotice = async (req,res)=>{
                 })
         }
 }
-const updateNotice = async (req,res)=>{
-        try {
-                const id = req.params.id;
-                const updatedBody = req.body;
-                if(!updatedBody){
-                        res.status(400).json({
-                        success:false,
-                        message:"please insert new notice data, update failed..",
-                        err:error.message,
-                })}
 
-                await notice.findByIdAndUpdate(
-                        id,
-                        updatedBody,
-                        {new:true}
-                );
-                res.status(200).json({
-                        success:true,
-                        message:"notice updated successfully",
-                })
-                
-        } catch (error) {
-              res.status(400).json({
-                        success:false,
-                        message:"error while updating message, update failed..",
-                        err:error.message,
-                })  
-        }
-}
 const removeNotice = async (req,res)=>{
         try {
                 const id = req.params.id;
@@ -94,4 +66,4 @@ const getNotice = async(req,res)=>{
         }
 
 }
-module.exports = {addNotice, getNotice, updateNotice,removeNotice};
+module.exports = {addNotice, getNotice ,removeNotice};

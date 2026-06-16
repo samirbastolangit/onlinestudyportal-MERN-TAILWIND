@@ -12,9 +12,12 @@ const noticeSchema = new mongoose.Schema({
         author:{
                 type:String,
                 require:true,
-        }},
-        {timestamps:true}
-);
+        },
+        publishedDate: {
+      type: Date,
+      default: Date.now,
+    }
+});
 const noticeModel = new mongoose.model(
         process.env.NOTICE_COLLECTION,
         noticeSchema

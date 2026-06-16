@@ -33,7 +33,7 @@ const Anavbar = () => {
             <NavLink to="/admin/notices" className="hover:text-blue-600">
               Notices
             </NavLink>
-            <NavLink to="/admin/user" className="hover:text-blue-600">
+            <NavLink to="/admin/users" className="hover:text-blue-600">
               Users
             </NavLink>
             <NavLink to="/admin/feedback" className="hover:text-blue-600">
@@ -73,7 +73,7 @@ const Anavbar = () => {
               <NavLink to="/admin/dashboard" className='hover:text-blue-600'>Dashboard</NavLink>
               <NavLink to="/admin/courses" className='hover:text-blue-600'>Courses</NavLink>
               <NavLink to="/admin/notices" className='hover:text-blue-600'>Notices</NavLink>
-              <NavLink to="/admin/user" className='hover:text-blue-600'>Users</NavLink>
+              <NavLink to="/admin/users" className='hover:text-blue-600'>Users</NavLink>
               <NavLink to="/admin/feedback" className='hover:text-blue-600'>Feedback</NavLink>
               <NavLink to="/admin/logout" className='hover:text-blue-600'>Logout</NavLink>
 

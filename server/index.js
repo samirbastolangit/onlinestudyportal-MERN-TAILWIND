@@ -15,6 +15,7 @@ const authRouter = require("./router/auth-router");
 const courseRouter  = require("./router/course-router");
 const userRouter = require("./router/user-router");
 const noticeRouter = require("./router/notice-router");
+const profileRouter = require("./router/profile-router");
 
 const connectDb = require("./db");
 
@@ -28,6 +29,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/notices", noticeRouter);
 app.use("/api/courses",courseRouter);
 app.use("/api/users",userRouter);
+app.use("/api/profile",profileRouter);
 
 connectDb();
 app.listen(process.env.SERVER_PORT,()=>{

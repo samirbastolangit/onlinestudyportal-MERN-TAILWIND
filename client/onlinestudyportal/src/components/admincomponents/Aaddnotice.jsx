@@ -1,16 +1,15 @@
-// AddNotice.jsx
-
 import { useState } from "react";
 import { FiX } from "react-icons/fi";
+const pnoticeuri = "http://localhost:3000/api/notices/admin/addnotice";
+import { useAuth } from "../../store/auth";
 
-const AddNotice = ({ onClose }) => {
-  const today = new Date().toISOString().split("T")[0];
+const AddNotice = ({ onClose, refreshNotices }) => {
+  const {token} = useAuth();
 
   const [notice, setNotice] = useState({
     title: "",
     description: "",
     author: "",
-    published: today,
   });
 
   const handleChange = (e) => {
@@ -22,11 +21,29 @@ const AddNotice = ({ onClose }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async(e) => {
+    try {  
+      e.preventDefault();
+      
+      const response = await fetch(pnoticeuri,{
+        method:'POST',
+        headers:{
+          Authorization:`Bearer ${token}`,
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify(notice)
+      });
+      if(response.ok){
+        console.log(await response.json().message);
+        console.log(notice);
+        onClose();
+        refreshNotices();
+      }
 
-    // Backend POST request here
-    console.log(notice);
+    } 
+    catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -67,6 +84,7 @@ const AddNotice = ({ onClose }) => {
                 type="text"
                 name="title"
                 value={notice.title}
+                required
                 onChange={handleChange}
                 placeholder="Enter Notice Title"
                 className="w-full border-2 rounded-xl p-4 outline-none focus:border-blue-500"
@@ -82,6 +100,7 @@ const AddNotice = ({ onClose }) => {
 
               <textarea
                 rows={7}
+                required
                 name="description"
                 value={notice.description}
                 onChange={handleChange}
@@ -102,28 +121,13 @@ const AddNotice = ({ onClose }) => {
                 name="author"
                 value={notice.author}
                 onChange={handleChange}
+                required
                 placeholder="Enter Author Name"
                 className="w-full border-2 rounded-xl p-4 outline-none focus:border-blue-500"
               />
             </div>
 
-            {/* Published Date */}
-
-            <div>
-              <label className="font-semibold text-xl block mb-2">
-                Published Date
-              </label>
-
-              <input
-                type="date"
-                name="published"
-                value={notice.published}
-                onChange={handleChange}
-                className="w-full border-2 rounded-xl p-4 outline-none focus:border-blue-500"
-              />
-            </div>
           </div>
-        </form>
 
         {/* Footer */}
 
@@ -133,19 +137,19 @@ const AddNotice = ({ onClose }) => {
             onClick={onClose}
             type="button"
             className="px-8 py-3 rounded-xl bg-gray-300 hover:bg-gray-400 font-semibold"
-          >
+            >
             Cancel
           </button>
 
           <button
             type="submit"
-            onClick={handleSubmit}
             className="px-8 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-          >
+            >
             Add Notice
           </button>
 
         </div>
+            </form>
 
       </div>
     </div>

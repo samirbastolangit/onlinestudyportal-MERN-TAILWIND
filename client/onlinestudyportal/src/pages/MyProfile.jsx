@@ -9,12 +9,12 @@ const Profile = () => {
   // ===============================
 
   const [profile, setProfile] = useState({
-    fullName: "",
-    country: "",
-    role: "student",
-    bio: "",
-    interests: [],
-  });
+  age: "",
+  country: "",
+  role: "student",
+  bio: "",
+  interest: "",
+});
 
   const [image, setImage] = useState(null);
 
@@ -26,29 +26,15 @@ const Profile = () => {
     });
   };
 
-  // Handle checkbox (interests)
-  const handleInterest = (value) => {
-    const alreadySelected = profile.interests.includes(value);
-
-    if (alreadySelected) {
-      setProfile({
-        ...profile,
-        interests: profile.interests.filter((i) => i !== value),
-      });
-    } else {
-      setProfile({
-        ...profile,
-        interests: [...profile.interests, value],
-      });
-    }
-  };
-
   // Handle image upload
   const handleImage = (e) => {
     const file = e.target.files[0];
     setImage(URL.createObjectURL(file)); // preview only
   };
 
+  const saveProfile=()=>{
+    console.log(profile);
+  }
   return (
     <section className="min-h-screen bg-gray-100 py-20 px-4">
 
@@ -99,25 +85,66 @@ const Profile = () => {
               className="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
             />
           </div>
+{/* Age */}
+<div>
+  <label className="font-medium">Age</label>
 
+  <input
+    type="number"
+    name="age"
+    value={profile.age}
+    onChange={handleChange}
+    placeholder="Enter your age"
+    min="1"
+    max="120"
+    className="w-full mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+  />
+</div>
           {/* Country */}
-          <div>
-            <label className="font-medium">Country</label>
+<div>
+  <label className="font-medium">Country</label>
 
-            <select
-              name="country"
-              value={profile.country}
-              onChange={handleChange}
-              className="w-full mt-2 p-3 border rounded-lg"
-            >
-              <option value="">Select Country</option>
-              <option>Nepal</option>
-              <option>India</option>
-              <option>USA</option>
-              <option>UK</option>
-              <option>Canada</option>
-            </select>
-          </div>
+  <select
+    name="country"
+    value={profile.country}
+    onChange={handleChange}
+    className="w-full mt-2 p-3 border rounded-lg"
+  >
+    <option value="">Select Country</option>
+
+    <option>Nepal</option>
+    <option>India</option>
+    <option>Bangladesh</option>
+    <option>Pakistan</option>
+    <option>Sri Lanka</option>
+    <option>Bhutan</option>
+    <option>China</option>
+    <option>Japan</option>
+    <option>South Korea</option>
+    <option>Singapore</option>
+    <option>Malaysia</option>
+    <option>Thailand</option>
+    <option>Indonesia</option>
+    <option>Vietnam</option>
+    <option>Philippines</option>
+    <option>Australia</option>
+    <option>New Zealand</option>
+    <option>USA</option>
+    <option>Canada</option>
+    <option>Mexico</option>
+    <option>UK</option>
+    <option>Germany</option>
+    <option>France</option>
+    <option>Italy</option>
+    <option>Spain</option>
+    <option>Netherlands</option>
+    <option>Switzerland</option>
+    <option>Norway</option>
+    <option>Sweden</option>
+    <option>Denmark</option>
+    <option>Finland</option>
+  </select>
+</div>
 
           {/* Role */}
           <div>
@@ -145,36 +172,57 @@ const Profile = () => {
                 />{" "}
                 Freelancer
               </label>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="intern"
+                  checked={profile.role === "intern"}
+                  onChange={handleChange}
+                />{" "}
+                Intern
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="role"
+                  value="juniorinfield"
+                  checked={profile.role === "juniorinfield"}
+                  onChange={handleChange}
+                />{" "}
+                Junior in field
+              </label>
             </div>
           </div>
+{/* Interest */}
+<div>
+  <label className="font-medium">Interest In</label>
 
-          {/* Interests */}
-          <div>
-            <label className="font-medium">Interest In</label>
+  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+    {[
+      "UI/UX",
+      "Web Development",
+      "App Development",
+      "Software Development",
+      "QA",
+      "Automation",
+      "Graphics Design",
+    ].map((item) => (
+      <label key={item} className="flex items-center gap-2">
+        <input
+          type="radio"
+          name="interest"
+          value={item}
+          checked={profile.interest === item}
+          onChange={handleChange}
+        />
+        {item}
+      </label>
+    ))}
 
-              {[
-                "UI/UX",
-                "Web Development",
-                "App Development",
-                "Software",
-                "QA",
-                "Automation",
-                "Graphics",
-              ].map((item) => (
-                <label key={item} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={profile.interests.includes(item)}
-                    onChange={() => handleInterest(item)}
-                  />
-                  {item}
-                </label>
-              ))}
-
-            </div>
-          </div>
+  </div>
+</div>
 
           {/* Bio */}
           <div>
@@ -204,7 +252,7 @@ const Profile = () => {
           </div>
 
           {/* Save Button */}
-          <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">
+          <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition" onClick={()=>saveProfile()}>
             Save Profile
           </button>
 

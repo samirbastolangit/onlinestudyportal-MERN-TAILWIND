@@ -1,35 +1,53 @@
 import { FiPlus, FiEdit2, FiTrash2, FiCalendar, FiUser } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddNotice from "../../components/admincomponents/Aaddnotice";
-
-const notices = [
-  {
-    id: 1,
-    title: "Holiday Announcement",
-    description:
-      "The institute will remain closed on Friday due to a public holiday.",
-    author: "Admin",
-    published: "13 June 2026",
-  },
-  {
-    id: 2,
-    title: "New MERN Course Added",
-    description:
-      "A complete MERN Stack Development course has been added for students.",
-    author: "Course Manager",
-    published: "11 June 2026",
-  },
-  {
-    id: 3,
-    title: "Exam Schedule",
-    description:
-      "Mid-term examinations will begin from next Monday. Check your dashboard for details.",
-    author: "Examination Dept.",
-    published: "09 June 2026",
-  },
-];
+const getnoticeuri = "http://localhost:3000/api/notices/";
+const rnoticeruri = "http://localhost:3000/api/notices/admin/rnotice/";
+import {useAuth} from "../../store/auth";
 
 const ANotices = () => {
+  const {token} = useAuth();
+  //function to fetch all notices
+  const [notices,setNotices] = useState([]);
+            const getNotices = async ()=>{
+              try {
+                const response = await fetch(getnoticeuri,{
+                  method:"GET"
+          });
+          if(response.ok){
+            const data = await response.json();
+            setNotices(data.message);
+          }
+        } 
+        catch (error) {
+          console.error(error);
+        }
+      }
+      
+      useEffect(() => {
+        getNotices();
+      }, []);
+
+// function to delete notice 
+const deleteNotice = async (id)=>{
+  try {
+    const response = await fetch(`${rnoticeruri}${id}`,
+      {
+        method:"DELETE",
+        headers:{
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      if(response.ok){
+        const msg = await response.json();
+        console.log(msg.message);
+        getNotices();
+      }
+  } catch (error) {
+    console.error(error);
+  }
+}
+// for function to add notice
           const [open, setOpen] = useState(false);
 
   return (
@@ -52,15 +70,18 @@ const ANotices = () => {
           Add Notice
         </button>
          {open && (
-        <AddNotice onClose={() => setOpen(false)} />
-      )}
+        <AddNotice 
+        onClose={() => setOpen(false)}
+        refreshNotices={getNotices}
+        />
+        )}
       </div>
 
       {/* Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {notices.map((notice) => (
-          <div
-            key={notice.id}
+           <div
+            key={notice._id}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 border border-slate-200"
           >
             {/* Title */}
@@ -82,20 +103,15 @@ const ANotices = () => {
 
               <div className="flex items-center gap-2">
                 <FiCalendar />
-                <span>{notice.published}</span>
+                <span>{notice.publishedDate}</span>
               </div>
             </div>
 
             {/* Buttons */}
             <div className="flex gap-3 mt-6">
-              <button
-                className="flex-1 flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg transition"
-              >
-                <FiEdit2 />
-                Update
-              </button>
 
               <button
+              onClick={()=>deleteNotice(notice._id)}
                 className="flex-1 flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-lg transition"
               >
                 <FiTrash2 />

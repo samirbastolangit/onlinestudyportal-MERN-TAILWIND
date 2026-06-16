@@ -22,6 +22,7 @@ import Alogin from "./pages/adminpages/Alogin";
 import Adashboard from "./pages/adminpages/Adashboard";
 import Acourses from "./pages/adminpages/Acourses";
 import ANotices from "./pages/adminpages/Anotices";
+import Ausers from "./pages/adminpages/Ausers";
 
 const App = ()=>{
   const {isLoggedIn} = useAuth();
@@ -60,8 +61,8 @@ const App = ()=>{
           <Route path="/admin/dashboard" element={<Adashboard />} />
           <Route path="/admin/courses" element={<Acourses />} />
           <Route path="/admin/notices" element={<ANotices />} />
+          <Route path="/admin/users" element={<Ausers />} />
           </Route>
-          {/* <Route path="/admin/users" element={<Ausers />} /> */}
           {/* <Route path="/admin/feedback" element={<Afeedback />} /> */}
           {/* <Route path="/admin/profile" element={<Aprofile />} /> */}
         </Route>

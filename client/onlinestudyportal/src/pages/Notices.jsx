@@ -97,7 +97,7 @@ const Notice = () => {
                 </span>
 
                 <span>
-                  <strong>Published:</strong> {notice.date}
+                  <strong>Published:</strong> {notice.publishedDate}
                 </span>
 
               </div>
