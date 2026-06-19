@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import logo from "../../assets/onlinestudylogo.png";
-import profileicon from "../../assets/profileicon.png";
+import { useAuth } from "../../store/auth";
 
 const Anavbar = () => {
+    const {isLoggedIn} = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
@@ -39,23 +40,17 @@ const Anavbar = () => {
             <NavLink to="/admin/feedback" className="hover:text-blue-600">
               Feedback
             </NavLink>
+            {isLoggedIn ?
             <NavLink to="/admin/logout" className="hover:text-blue-600">
               Logout
             </NavLink>
+            :
+            <NavLink to="/admin/login" className="hover:text-blue-600">
+              Login
+            </NavLink>
+            }
             
           </nav>
-
-          {/* Desktop Profile */}
-          <div className="hidden md:flex items-center gap-3">
-            <img
-              src={profileicon}
-              alt="profile"
-              className="w-10 h-10 rounded-full"
-            />
-            <NavLink to="/admin/myprofile" className="hover:text-blue-600">
-              Profile
-            </NavLink>
-          </div>
 
           {/* Hamburger Button */}
           <button
@@ -77,14 +72,6 @@ const Anavbar = () => {
               <NavLink to="/admin/feedback" className='hover:text-blue-600'>Feedback</NavLink>
               <NavLink to="/admin/logout" className='hover:text-blue-600'>Logout</NavLink>
 
-              <div className="flex items-center gap-3 pt-2 border-t">
-                <img
-                  src={profileicon}
-                  alt="profile"
-                  className="w-10 h-10 rounded-full"
-                />
-                <NavLink to="/admin/myprofile" className='hover:text-blue-600'>Profile</NavLink>
-              </div>
             </nav>
           </div>
         )}

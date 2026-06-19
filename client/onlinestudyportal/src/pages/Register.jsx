@@ -11,7 +11,6 @@ const Register = () => {
   });
   const handleRFormSubmit = async (e)=>{
     e.preventDefault();
-    console.log("user: ",user);
 
     //connecting with backend and dbs
     const uri = "http://localhost:3000/api/auth/register";
@@ -23,9 +22,8 @@ const Register = () => {
       body:JSON.stringify(user),
     });
     if(response.ok){
-      const res_data = await response.json();
-      console.log("res_data", res_data);
-      setUser({fullname:"",
+      setUser({
+        fullname:"",
         email:"",
         password:""
       });

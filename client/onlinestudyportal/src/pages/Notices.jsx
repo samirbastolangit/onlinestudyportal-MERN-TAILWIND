@@ -12,7 +12,6 @@ const Notice = () => {
       });
       if(response.ok){
         const data = await response.json();
-        console.log(data.message);
         setNoticeData(data.message);
       }
     } catch (error) {

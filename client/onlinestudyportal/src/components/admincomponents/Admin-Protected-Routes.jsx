@@ -3,23 +3,25 @@ import { useAuth } from "../../store/auth";
 
 const AdminProtectedRoute = () => {
   const { isLoggedIn, isAdmin, loading } = useAuth();
+  console.log(
+  loading,
+  isLoggedIn,
+  isAdmin
+);
 
   if (loading) {
-  return <div>Loading...</div>;
+    return <h1>Loading...</h1>;
   }
-  // User is not logged in
+
   if (!isLoggedIn) {
     return <Navigate to="/admin/login" replace />;
   }
 
-  // User is logged in but not an admin
   if (!isAdmin) {
-    console.log('isadmin inside admin protect',isAdmin);
     return <Navigate to="/" replace />;
   }
 
-  // User is an authenticated admin
   return <Outlet />;
 };
 
-export default AdminProtectedRoute;
+export default AdminProtectedRoute; 

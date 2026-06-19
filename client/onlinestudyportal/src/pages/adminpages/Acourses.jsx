@@ -108,7 +108,14 @@ const Acourses = () => {
               <h2 className="text-xl font-bold text-gray-800 mb-2">
                 {course.title}
               </h2>
-
+              <div className="mt-4 flex justify-between">
+                  <span>
+    Published: {new Date(course.createdAt).toLocaleDateString()}
+  </span>
+                  <span>
+    Modified: {new Date(course.updatedAt).toLocaleDateString()}
+  </span>
+                </div>
               <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                 {course.description}
               </p>
@@ -116,12 +123,12 @@ const Acourses = () => {
               <div className="space-y-2 mb-5">
                 <p>
                   <span className="font-semibold">Duration:</span>{" "}
-                  {course.duration}
+                  {course.duration} {Number(course.duration) > 1 ? "Months":"Month"}
                 </p>
 
                 <p>
                   <span className="font-semibold">Fee:</span>{" "}
-                  {course.fee}
+                  NRs. {course.fee}
                 </p>
               </div>
 

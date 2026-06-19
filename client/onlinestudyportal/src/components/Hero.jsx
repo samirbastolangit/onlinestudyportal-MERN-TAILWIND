@@ -1,8 +1,11 @@
 import heroImage from "../assets/onlinestudy.jpeg";
 import { useNavigate } from "react-router-dom";
+import {useAuth} from "../store/auth"
 
 const Hero = () => {
   const navigate = useNavigate();
+  const {isLoggedIn} = useAuth();
+
   return (
     /*
       min-h-screen
@@ -91,6 +94,7 @@ const Hero = () => {
             Explore Courses
           </button>
 
+         {!isLoggedIn && (
           <button
             className="
             border
@@ -109,6 +113,7 @@ const Hero = () => {
           >
             Register Now
           </button>
+         )} 
         </div>
       </div>
 

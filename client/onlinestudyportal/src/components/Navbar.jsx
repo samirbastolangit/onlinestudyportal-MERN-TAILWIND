@@ -35,19 +35,10 @@ const Navbar = () => {
             </NavLink>
             {isLoggedIn
             ?
+            <>
             <NavLink to="/logout  " className="hover:text-blue-600">
               Logout
             </NavLink>
-            :<>
-            <NavLink to="/register" className="hover:text-blue-600">
-              Register
-            </NavLink>
-            <NavLink to="/login" className="hover:text-blue-600">
-              Login
-            </NavLink>
-            </>}
-          </nav>
-
           {/* Desktop Profile */}
           <div className="hidden md:flex items-center gap-3">
             <img
@@ -59,6 +50,17 @@ const Navbar = () => {
               Profile
             </NavLink>
           </div>
+            </>
+            :<>
+            <NavLink to="/register" className="hover:text-blue-600">
+              Register
+            </NavLink>
+            <NavLink to="/login" className="hover:text-blue-600">
+              Login
+            </NavLink>
+            </>}
+          </nav>
+
 
           {/* Hamburger Button */}
           <button
@@ -75,9 +77,9 @@ const Navbar = () => {
             <nav className="flex flex-col p-5 gap-4 font-medium">
               <NavLink to="/courses" className='hover:text-blue-600'>Our Courses</NavLink>
               <NavLink to="/notices" className='hover:text-blue-600'>Notices</NavLink>
-              <NavLink to="/register" className='hover:text-blue-600'>Register</NavLink>
-              <NavLink to="/login" className='hover:text-blue-600'>Login</NavLink>
-
+              {isLoggedIn ?
+              <>
+<NavLink to="/logout" className='hover:text-blue-600'>Logout</NavLink>
               <div className="flex items-center gap-3 pt-2 border-t">
                 <img
                   src={profileicon}
@@ -86,6 +88,13 @@ const Navbar = () => {
                 />
                 <NavLink to="/myprofile" className='hover:text-blue-600'>Profile</NavLink>
               </div>
+
+              </>:
+              <>
+              <NavLink to="/register" className='hover:text-blue-600'>Register</NavLink>
+              <NavLink to="/login" className='hover:text-blue-600'>Login</NavLink>
+              </>}
+
             </nav>
           </div>
         )}

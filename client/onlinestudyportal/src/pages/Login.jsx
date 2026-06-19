@@ -21,7 +21,6 @@ const Login = () => {
   }
   const handleLFormSubmit = async (e)=>{
     e.preventDefault();
-    console.log("logged in detail:", user);
 
     // connecting with backend and dbs
     const uri = "http://localhost:3000/api/auth/login";
@@ -34,13 +33,18 @@ const Login = () => {
     })
     if(response.ok){
       const res_data = await response.json();
-      console.log(res_data);
       storeTokenInLs(res_data.token);
       setUser({
         email:"",
         password:"",
       });
-      navigate("/");
+      if (res_data.isAdmin) {
+        console.log('navigating to aadmin')
+        navigate("/admin/dashboard");
+      } 
+      else {
+        navigate("/");
+      }
     }
   }
   return (

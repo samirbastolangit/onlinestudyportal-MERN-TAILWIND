@@ -39,8 +39,6 @@ const Ausers = () => {
         }
       });
       if(response.ok){
-        const msg = await response.json();
-        console.log(msg.message);
         getUsers();
       }
     } catch (error) {
@@ -64,7 +62,7 @@ const Ausers = () => {
       </div>
 
       {/* Users Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  xl:grid-cols-6 gap-6">
 
         {users.map((user) => (
           <div
@@ -86,6 +84,10 @@ const Ausers = () => {
               <p className="text-blue-600 text-sm mb-4 line-clamp-3">
                 {user.email}
               </p>
+              <p className="text-blue-600 text-sm mb-4 line-clamp-3">
+                Role-{user.role}
+              </p>
+              
                 </div>
 
                 <button

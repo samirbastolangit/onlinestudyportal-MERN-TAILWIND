@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }) => {
         Authorization:`Bearer ${token}`,
       },
     });
+  console.log("Fetching user...");
 
     if(response.ok){
       const data = await response.json();

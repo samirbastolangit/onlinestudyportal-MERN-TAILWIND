@@ -1,35 +1,58 @@
-const user = require("../schema/userDb"); 
+const user = require("../schema/userDb");
+const Profile = require("../schema/profileSchema");
 
-const getallusers = async (req,res)=>{
+const getallusers = async (req, res) => {
+  try {
+    const persons = await user.find().select("-password");
 
-        try {
-                const userData = req.user;
-                const wholeuser = await user.find().select({password:0});
-                console.log("admin has logged in ",userData.email);
-                res.status(200).json({
-                        success:true,
-                        message:wholeuser,
-                        admindata: userData,
-                }); 
-        } catch (error) {
-                console.error("error in admin page...");
-                res.status(400).json({
-                        success:false,
-                        message:`error in admin page...`,
-                        err:error.message
-                })
-        }     
-}
+    const wholeuser = await Promise.all(
+      persons.map(async (person) => {
+        const profile = await Profile.findOne({
+          user: person._id,
+        });
 
+        return {
+          ...person.toObject(),
+          role: profile?.role || "Not Set",
+        };
+      })
+    );
+
+    res.status(200).json({
+      success: true,
+      message: wholeuser,
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
 const deleteuserac = async (req,res)=>{
         try {
                 const id = req.params.id;
-                const accountRemoved = await user.findByIdAndDelete(id);
-                res.status(200).json({
-                        success:true,
-                        message:`account ${accountRemoved.email} has been removed from dbs`,
-                });
-                console.log(`${accountRemoved.email} has been removed from dbs`);
+
+                // delete profile linked to user
+                const currentuser = await user.findOne({_id:id});
+                if(!currentuser.isAdmin){
+                        await Profile.findOneAndDelete({ user: id });
+                        const accountRemoved = await user.findByIdAndDelete(id);
+                        
+                        res.status(200).json({
+                                success:true,
+                                message:`account ${accountRemoved.email} has been removed from dbs`,
+                        });
+                        console.log(`${accountRemoved.email} has been removed from dbs`);
+                }
+
+                res.status(400).json({
+                                success:false,
+                                message:`admin cann't be removed`,
+                        });                
+
         } catch (error) {
                 res.status(400).json({
                         success:false,
@@ -41,6 +64,10 @@ const deleteuserac = async (req,res)=>{
 const deletemyac = async (req,res)=>{
         try {
                 const id = req.id;
+
+                // delete profile linked to user
+                await Profile.findOneAndDelete({ user: id });
+
                 const accountRemoved = await user.findByIdAndDelete(id);
                 res.status(200).json({
                         success:true,

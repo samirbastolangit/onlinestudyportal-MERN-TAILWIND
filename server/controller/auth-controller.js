@@ -5,7 +5,7 @@ const {sendWelcomeEmail} = require("../services/emailServices");
 
 const register = async(req,res) =>{
         try {
-                const {fullname,email,password} = req.body;
+                const {fullname,email,password, role} = req.body;
                 const userExist = await userModel.findOne({email});
                 if(userExist){
                         return res.status(400).json({
@@ -14,7 +14,7 @@ const register = async(req,res) =>{
                 }
                 const salt = await bcrypt.genSaltSync(10);
                 const hashPassword = await bcrypt.hashSync(password,salt);
-                const userCreated = await userModel.create({fullname,email,password:hashPassword});
+                const userCreated = await userModel.create({fullname,email,password:hashPassword},role);
 
                 const token = await userCreated.generateToken();
 
@@ -58,6 +58,7 @@ const login = async(req,res)=>{
                                 success:true,
                                 token:token,
                                 message:"login successful",
+                                isAdmin:userExist.isAdmin
                         });
                         console.log(`${email} has just logged in`);
                 }

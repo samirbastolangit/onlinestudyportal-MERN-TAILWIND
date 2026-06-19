@@ -21,7 +21,6 @@ const Alogin = () => {
   }
   const handleLFormSubmit = async (e)=>{
     e.preventDefault();
-    console.log("logged in detail:", user);
 
     // connecting with backend and dbs
     const uri = "http://localhost:3000/api/auth/login";
@@ -34,7 +33,6 @@ const Alogin = () => {
     })
     if(response.ok){
       const res_data = await response.json();
-      console.log(res_data);
       storeTokenInLs(res_data.token);
       setUser({
         email:"",

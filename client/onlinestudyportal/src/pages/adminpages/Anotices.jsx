@@ -39,8 +39,6 @@ const deleteNotice = async (id)=>{
         }
       });
       if(response.ok){
-        const msg = await response.json();
-        console.log(msg.message);
         getNotices();
       }
   } catch (error) {

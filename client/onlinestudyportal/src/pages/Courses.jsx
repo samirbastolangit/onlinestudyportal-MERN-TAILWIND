@@ -93,10 +93,6 @@ const Courses = () => {
                   {course.title}
                 </h2>
 
-                <p className="text-yellow-500 mt-2">
-                  ⭐⭐⭐⭐☆
-                </p>
-
                 <p className="text-gray-600 mt-3">
                   {course.description}
                 </p>
@@ -104,13 +100,21 @@ const Courses = () => {
                 <div className="mt-4 flex justify-between">
 
                   <span>
-                    ⏰ {course.duration}
+                    ⏰ {course.duration} {Number(course.duration) > 1 ? "months":"month"}
                   </span>
 
                   <span className="font-semibold text-green-600">
-                    {course.fee}
+                    NRs. {course.fee} 
                   </span>
 
+                </div>
+                <div className="mt-4 flex flex-col justify-between md:flex-row">
+                  <span>
+    Published: {new Date(course.createdAt).toLocaleDateString()}
+  </span>
+                  <span>
+    Modified: {new Date(course.updatedAt).toLocaleDateString()}
+  </span>
                 </div>
 
                 <button

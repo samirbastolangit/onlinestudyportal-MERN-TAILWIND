@@ -18,7 +18,7 @@ const noticeSchema = new mongoose.Schema({
       default: Date.now,
     }
 });
-const noticeModel = new mongoose.model(
+const noticeModel = new mongoose.model( 
         process.env.NOTICE_COLLECTION,
         noticeSchema
 );

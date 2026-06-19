@@ -16,7 +16,10 @@ const courseSchema = new mongoose.Schema({
         fee:{
                 type:Number,
                 require:true,
-        }
+        },
+},
+{
+        timestamps:true,
 });
 const courseModel = new mongoose.model(
         process.env.COURSE_COLLECTION,

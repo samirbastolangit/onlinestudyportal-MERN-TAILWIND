@@ -41,7 +41,6 @@ const AddCourse = ({ onClose, refreshCourses }) => {
       });
       if(response.ok){
         const data = await response.json();
-        console.log(data.message);
         onClose();
         refreshCourses();
       }
@@ -50,13 +49,6 @@ const AddCourse = ({ onClose, refreshCourses }) => {
       console.error(error);
     }
 
-    // Backend Example
-    // const data = new FormData();
-    // data.append("thumbnail", formData.thumbnail);
-    // data.append("title", formData.title);
-    // data.append("description", formData.description);
-    // data.append("duration", formData.duration);
-    // data.append("fee", formData.fee);
   };
 
   return (

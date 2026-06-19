@@ -34,8 +34,6 @@ const AddNotice = ({ onClose, refreshNotices }) => {
         body: JSON.stringify(notice)
       });
       if(response.ok){
-        console.log(await response.json().message);
-        console.log(notice);
         onClose();
         refreshNotices();
       }
