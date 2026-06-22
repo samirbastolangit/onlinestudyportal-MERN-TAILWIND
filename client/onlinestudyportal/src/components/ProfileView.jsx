@@ -24,10 +24,10 @@ const ProfileView = ({ user, profile, openForm }) => {
 
           <img
   src={
-    profile?.profileImage ||
+    profile?.profileImage ? `http://localhost:3000${profile.profileImage}`:
     "https://dummyimage.com/150x150/e5e7eb/6b7280&text=Profile"
   }
-  alt="profile"
+  alt="profile img"
   className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
 />
 

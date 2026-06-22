@@ -40,16 +40,20 @@ const Profile = () => {
       const response = await fetch(updateProfileURI, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
-      });
+        body:formData,
+      }
+    );
 
       const data = await response.json();
 
       if (response.ok) {
-        setProfile(data.profile);
+
+        setProfile(
+          data.message
+        );
+
         setShowForm(false);
       }
     } catch (error) {

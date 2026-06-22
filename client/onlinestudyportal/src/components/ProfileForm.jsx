@@ -4,13 +4,16 @@ import { useState } from "react";
 
 const ProfileForm = ({ profile, onSave, onClose,refreshProfile }) => {
 
+  const [profileImage, setProfileImage] = useState(null);
+
   const [form, setForm] = useState({
     age: profile?.age || "",
     country: profile?.country || "",
     role: profile?.role || "student",
     bio: profile?.bio || "",
     interest: profile?.interest || "Programming"
-  });
+  }
+);
   const [imagePreview, setImagePreview] = useState(
   profile?.profileImage || ""
 );
@@ -21,19 +24,49 @@ const ProfileForm = ({ profile, onSave, onClose,refreshProfile }) => {
     });
   };
 
-  const handleImage = (e) => {
+const handleImage = (e) => {
   const file = e.target.files[0];
 
   if (!file) return;
 
-  setImagePreview(URL.createObjectURL(file));
+    setProfileImage(file);
+
+  setImagePreview(
+    URL.createObjectURL(file)
+  );
 };
 const submitHandler =async () => {
-localStorage.setItem(
-    "profileImage",
-    imagePreview
+
+  const formdata = new FormData();
+
+  formdata.append(
+    "age",
+    form.age
   );
-  await onSave(form);
+  formdata.append(
+    "country",
+    form.country
+  );
+  formdata.append(
+    "role",
+    form.role
+  );
+  formdata.append(
+    "bio",
+    form.bio
+  );
+  formdata.append(
+    "interest",
+    form.interest
+  );
+  if(profileImage){
+    formdata.append(
+      "profileImage",
+      profileImage
+    )
+  }
+  
+  await onSave(formdata);
   await refreshProfile();
   };
 

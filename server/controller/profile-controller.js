@@ -1,6 +1,8 @@
 const Profile = require("../schema/profileSchema");
 
 const createOrUpdateProfile = async (req, res) => {
+  console.log("profile controller req body: ",req.body);
+  console.log("profile controller req file: ",req.file);
   try {
     const userId = req.id;
 
@@ -12,6 +14,12 @@ const createOrUpdateProfile = async (req, res) => {
       interest,
     } = req.body;
 
+    const imagePath =
+      req.file
+      ? `/uploads/${req.file.filename}`
+      : "";
+
+
     const profile = await Profile.findOneAndUpdate(
       { user: userId },
       {
@@ -20,6 +28,8 @@ const createOrUpdateProfile = async (req, res) => {
         role,
         bio,
         interest,
+
+        profileImage: imagePath,
       },
       {
         new: true,
