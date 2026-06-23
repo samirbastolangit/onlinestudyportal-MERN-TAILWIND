@@ -54,7 +54,11 @@ const profileSchema = new mongoose.Schema(
 
     profileImage: {
       type: String,
-      default: "",
+      default: null,
+    },
+    profileImagePublicId:{
+      type: String,
+      default:null,
     },
   },
   {

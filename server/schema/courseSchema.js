@@ -17,6 +17,14 @@ const courseSchema = new mongoose.Schema({
                 type:Number,
                 require:true,
         },
+        thumbnailImg:{
+                type:String,
+                default:null,
+        },
+        thumbnailImgId:{
+                type:String,
+                default:null,
+        },
 },
 {
         timestamps:true,

@@ -13,10 +13,10 @@ const sendWelcomeEmail = async (email, name) => {
 
   await transporter.sendMail(mailOptions,(error, info) =>{
         if(error){
-                console.log(`nodemailer error occur-${error}`);
+                return console.log(`nodemailer error occur-${error}`);
         }
         else{
-                console.log('Email sent ',info.response);
+                return console.log('Email sent ',info.response);
         }
   });
 };

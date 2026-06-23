@@ -29,10 +29,11 @@ const authmiddleware = async (req,res, next)=>{
         } 
         
         catch (error) {
-                res.status(400).json({
+                console.log("error in authorization: ",error);
+
+                return res.status(400).json({
                         success:false,
-                        message:"unauthorized attempt, invalid token",
-                        error:error.message,
+                        message:"error in authorization",
                 })
         }
 }

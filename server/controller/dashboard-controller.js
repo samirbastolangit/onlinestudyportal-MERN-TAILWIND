@@ -10,7 +10,7 @@ try {
         const totalteacher = await Profile.countDocuments({
                 role:"teacher"
         });
-        res.status(200).json({
+        return res.status(200).json({
                 success:true,
                 totalcourse:totalcourse,
                 totalstudent:totalstudent,
@@ -19,10 +19,10 @@ try {
 }
 catch (err) {
                 console.log("error while adding course:", err);
-                res.status(400).json({
+                
+                return res.status(400).json({
                 success:false,
                 message:"fail while adding courses",
-                error:err,
              });
         }
 }

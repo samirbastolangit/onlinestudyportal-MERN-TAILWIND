@@ -1,11 +1,11 @@
 const Profile = require("../schema/profileSchema");
+const uploadToCloudinary = require("../services/uploadToCloudinary");
+const cloudinary = require("../config/cloudinary");
+
 
 const createOrUpdateProfile = async (req, res) => {
-  console.log("profile controller req body: ",req.body);
-  console.log("profile controller req file: ",req.file);
   try {
     const userId = req.id;
-
     const {
       age,
       country,
@@ -14,41 +14,50 @@ const createOrUpdateProfile = async (req, res) => {
       interest,
     } = req.body;
 
-    const imagePath =
-      req.file
-      ? `/uploads/${req.file.filename}`
-      : "";
+    const updateData = {
+  age,
+  country,
+  role,
+  bio,
+  interest,
+};
+const oldProfile = await Profile.findOne({user:userId});
+    if(req.file){
 
+      const result = await uploadToCloudinary(req.file.buffer, "profile-images");
 
+      updateData.profileImage = result.secure_url;
+      updateData.profileImagePublicId = result.public_id;   
+      
+    }
+    
     const profile = await Profile.findOneAndUpdate(
       { user: userId },
-      {
-        age,
-        country,
-        role,
-        bio,
-        interest,
-
-        profileImage: imagePath,
-      },
+      updateData,
       {
         new: true,
         upsert: true,
         runValidators: true,
       }
     );
+    if (oldProfile?.profileImagePublicId) {
+  await cloudinary.uploader.destroy(
+    oldProfile.profileImagePublicId
+  );
+}
 
     return res.status(200).json({
       success: true,
-      message: profile,      
+      message: profile,
+      display_message: "profile created/updated successfully"
     });
   } 
   catch (error) {
-    console.error(error);
+    console.error("error while updating profile: ",error);
 
     return res.status(500).json({
       success: false,
-      message: "Internal Server Error",
+      message: "error while updating profile",
     });
   }
 };
@@ -74,13 +83,15 @@ const getProfile = async (req, res) => {
     return res.status(200).json({
       success: true,
       message:profile,
+      display_message: "profile fetched successfully"
     });
-  } catch (error) {
-    console.error(error);
+  } 
+  catch (error) {
+    console.error("error while fetching profile: ", error);
 
     return res.status(500).json({
       success: false,
-      message: "Internal Server Error",
+      message: "error while fetching profile",
     });
   }
 };

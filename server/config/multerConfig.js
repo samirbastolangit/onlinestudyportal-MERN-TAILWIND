@@ -1,31 +1,14 @@
-// config/multerConfig.js
 
 const multer = require("multer");
-const path = require("path");
 
-const storage = multer.diskStorage({
-
-    destination: (req, file, cb) => {
-
-        cb(null, "assets/uploads/");
-    },
-
-    filename: (req, file, cb) => {
-
-        const uniqueName =
-            Date.now() +
-            path.extname(file.originalname);
-
-        cb(null, uniqueName);
-    },
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
 
     storage,
 
     limits: {
-        fileSize: 700 * 1024, //500KB
+        fileSize: 500 * 1024, //500KB
     },
 
     fileFilter: (req, file, cb) => {

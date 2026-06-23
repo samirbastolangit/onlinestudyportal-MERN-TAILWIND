@@ -1,6 +1,26 @@
-// components/profile/ProfileView.jsx
+const deletemyacuri = "http://localhost:3000/api/users/deletemyac";
+import { useNavigate } from "react-router-dom";
+import {useAuth} from "../store/auth";
 
 const ProfileView = ({ user, profile, openForm }) => {
+  const {token} = useAuth();
+  const navigate = useNavigate();
+
+  const deletemyac = async()=>{
+    try {
+      const response = await fetch(deletemyacuri,{
+        method:"DELETE",
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
+      if(response.ok){
+       navigate("/logout");
+      }
+    } catch (error) {
+     console.log(error);
+    }
+  }
   return (
     <section className="min-h-screen bg-gray-100 py-20 px-4">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
@@ -13,7 +33,7 @@ const ProfileView = ({ user, profile, openForm }) => {
 
           <button
             onClick={openForm}
-            className="bg-blue-600 text-white px-5 py-2 rounded-lg"
+            className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:text-black"
           >
             {profile ? "Update Profile" : "Add Profile"}
           </button>
@@ -24,7 +44,7 @@ const ProfileView = ({ user, profile, openForm }) => {
 
           <img
   src={
-    profile?.profileImage ? `http://localhost:3000${profile.profileImage}`:
+    profile?.profileImage ? profile.profileImage :
     "https://dummyimage.com/150x150/e5e7eb/6b7280&text=Profile"
   }
   alt="profile img"
@@ -38,7 +58,7 @@ const ProfileView = ({ user, profile, openForm }) => {
           <p>
             <strong>Name:</strong> {user?.fullname}
           </p>
-
+ 
           <p>
             <strong>Email:</strong> {user?.email}
           </p>
@@ -70,6 +90,7 @@ const ProfileView = ({ user, profile, openForm }) => {
               No profile information available.
             </p>
           )}
+          <button className="bg-red-600 text-white px-5 py-2 rounded-lg hover:text-black" onClick={deletemyac}>Delete Account</button>
         </div>
       </div>
     </section>

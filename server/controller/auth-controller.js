@@ -18,26 +18,26 @@ const register = async(req,res) =>{
 
                 const token = await userCreated.generateToken();
 
-                        try {
+                try {
                                 await sendWelcomeEmail(email, fullname);
-                        } 
-                        catch (mailError) {
+                } 
+                catch (mailError) {
                                 console.error("Nodemailer failed:", mailError);
-                        }
+                }
 
-                res.status(200).json({
+                console.log(`${email} just registered`);
+                return res.status(200).json({
                         success:true,
                         message:"registration success",
                         token:token,
                 })
-                console.log(`${email} just registered`);
 
         } catch (err) {
                 console.log("registration error:", err);
-                res.status(400).json({
+                
+                return res.status(400).json({
                         success:false,
                         message:"registration error",
-                        error:err,
                 });
         }
 }
@@ -54,16 +54,16 @@ const login = async(req,res)=>{
                 const comparedPass = await bcrypt.compare(password,userExist.password);
                 if(comparedPass){
                         const token = await userExist.generateToken();
-                        res.status(200).json({
+                        console.log(`${email} has just logged in`);
+                        return res.status(200).json({
                                 success:true,
                                 token:token,
                                 message:"login successful",
                                 isAdmin:userExist.isAdmin
                         });
-                        console.log(`${email} has just logged in`);
                 }
                 else{
-                        res.status(400).json({
+                        return res.status(400).json({
                                 success:false,
                                 message:"invalid credentials",
                         });
@@ -71,10 +71,10 @@ const login = async(req,res)=>{
                 }
         } catch (err) {
                 console.log("login error: ", err)
-                res.status(400).json({
+                
+                return res.status(400).json({
                         success:false,
                         message:"login error",
-                        error:err.message,
                 });
         }
 }
@@ -84,17 +84,18 @@ const user = async(req,res)=>{
                 const userToken = req.token;
                 const userId = req._id;
 
-                res.status(200).json({
+                return res.status(200).json({
                 success:true,
                 user: userData,
                 id:userId,
                 token:userToken,
         });
         } catch (error) {
-                res.status(400).json({
+                console.log("error in user controller: ", error);
+
+                return res.status(400).json({
                         success:false,
                         message:"user not found",
-                        error:err.message,
                 });
         }
 }

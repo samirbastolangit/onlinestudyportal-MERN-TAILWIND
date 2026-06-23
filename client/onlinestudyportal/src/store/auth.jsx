@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect } from "react";
 import { useState } from "react";
+import { toast } from 'react-toastify';
 
 export const AuthContext = createContext();
 
@@ -15,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAdmin(null);
     setLoading(false);
+    toast.success("logout successfully");
     return localStorage.removeItem("token");
   };
   const storeTokenInLs = (jwtToken) => {

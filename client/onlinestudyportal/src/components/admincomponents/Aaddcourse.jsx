@@ -5,8 +5,11 @@ import { useAuth } from "../../store/auth";
 
 const AddCourse = ({ onClose, refreshCourses }) => {
   const {token} = useAuth();
-  const [formData, setFormData] = useState({
-    thumbnail: null,
+  
+  const [courseThumbnail, setCourseThumbnail] = useState(null);
+  const [courseThumbnailPreview, setCourseThumbnailPreview] = useState(null);
+
+  const [courseData, setCourseData] = useState({
     title: "",
     description: "",
     duration: "",
@@ -14,33 +17,50 @@ const AddCourse = ({ onClose, refreshCourses }) => {
   });
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    setCourseData({
+      ...courseData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    if (name === "thumbnail") {
-      setFormData({
-        ...formData,
-        thumbnail: files[0],
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-  }};
+const handleImage = (e) => {
+  const file = e.target.files[0];
+
+  if (!file) return;
+
+  setCourseThumbnail(file);
+  setCourseThumbnailPreview(URL.createObjectURL(file));
+
+};
 
   const handleSubmit = async (e) => {
     try { 
-      e.preventDefault();
-      const response = await fetch(pcourseuri,{
+        e.preventDefault();
+
+        const formdata = new FormData();
+
+        formdata.append("title", courseData.title);
+        formdata.append("description", courseData.description);
+        formdata.append("duration", courseData.duration);
+        formdata.append("fee", courseData.fee);
+
+        if(courseThumbnail){
+    formdata.append(
+      "courseThumbnail",
+      courseThumbnail
+    )
+  }
+
+  const response = await fetch(pcourseuri,{
         method:"POST",
         headers:{
           Authorization :`Bearer ${token}`,
-          'Content-Type':'application/json',
         },
-        body:JSON.stringify(formData)
+        body:formdata,
       });
       if(response.ok){
-        const data = await response.json();
+        // const data = await response.json();
+
         onClose();
         refreshCourses();
       }
@@ -106,26 +126,34 @@ const AddCourse = ({ onClose, refreshCourses }) => {
               <label className="font-semibold block mb-2">
                 Course Thumbnail
               </label>
+<label className="border-2 border-dashed border-gray-300 rounded-xl h-40 flex flex-col justify-center items-center cursor-pointer hover:border-blue-500 transition">
 
-              <label className="border-2 border-dashed border-gray-300 rounded-xl h-40 flex flex-col justify-center items-center cursor-pointer hover:border-blue-500 transition">
+    {courseThumbnailPreview ? (
+        <img
+            src={courseThumbnailPreview}
+            alt="thumbnail preview"
+            className="h-full w-full object-cover rounded-xl"
+        />
+    ) : (
+        <>
+            <FaCloudUploadAlt className="text-5xl text-blue-600 mb-2" />
 
-                <FaCloudUploadAlt className="text-5xl text-blue-600 mb-2" />
+            <span className="text-gray-500">
+                Click to Upload
+            </span>
+        </>
+    )}
 
-                <span className="text-gray-500">
-                  Click to Upload
-                </span>
+    <input
+        type="file"
+        name="thumbnail"
+        accept="image/*"
+        className="hidden"
+        onChange={handleImage}
+    />
 
-                <input
-                  type="file"
-                  name="thumbnail"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleChange}
-                />
-
-              </label>
-
-            </div>
+</label>
+</div>
 
             {/* Title */}
 
@@ -138,7 +166,7 @@ const AddCourse = ({ onClose, refreshCourses }) => {
               <input
                 type="text"
                 name="title"
-                value={formData.title}
+                value={courseData.title}
                 onChange={handleChange}
                 placeholder="Enter Course Title"
                 required
@@ -158,7 +186,7 @@ const AddCourse = ({ onClose, refreshCourses }) => {
               <textarea
                 rows="5"
                 name="description"
-                value={formData.description}
+                value={courseData.description}
                 onChange={handleChange}
                 placeholder="Enter Course Description"
                 required
@@ -178,7 +206,7 @@ const AddCourse = ({ onClose, refreshCourses }) => {
                 <input
                   type="text"
                   name="duration"
-                  value={formData.duration}
+                  value={courseData.duration}
                   onChange={handleChange}
                   placeholder="Example: 3 Months"
                   required
@@ -196,7 +224,7 @@ const AddCourse = ({ onClose, refreshCourses }) => {
                 <input
                   type="text"
                   name="fee"
-                  value={formData.fee}
+                  value={courseData.fee}
                   onChange={handleChange}
                   placeholder="Example: Rs. 5000"
                   required

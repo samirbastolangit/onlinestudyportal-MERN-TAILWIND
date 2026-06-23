@@ -4,25 +4,25 @@ const addNotice = async (req,res)=>{
         try {
         const {title,description,author} = req.body;
         if(!req.body){
-                res.status(400).json({
+                return res.status(400).json({
                         success:false,
                         message:"empty or invalid notice field provided",
-                        err:error.message,
                 })
         } 
         await notice.create({
                 title,description,author
         });
-        res.status(200).json({
+        return res.status(200).json({
                         success:true,
-                        message:"notice add successfully",
+                        message:"notice added successfully",
         });
         } 
         catch (error) {
-                res.status(400).json({
+                console.log("fail to add notices: ",error);
+
+                return res.status(400).json({
                         success:false,
                         message:"fail to add notices",
-                        err:error.message,
                 })
         }
 }
@@ -30,16 +30,16 @@ const addNotice = async (req,res)=>{
 const removeNotice = async (req,res)=>{
         try {
                 const id = req.params.id;
-                const deletedNotice = await notice.findByIdAndDelete(id);
-                res.status(200).json({
+                await notice.findByIdAndDelete(id);
+                return res.status(200).json({
                         success:true,
-                        message:`${deletedNotice.title} removed successfully`,
+                        message:`notice removed successfully`,
                 })
         } catch (error) {
-                res.status(400).json({
+                console.log("error while removing notice: ", error);
+                return res.status(400).json({
                         success:false,
                         message:"error while removing notice",
-                        err:error.message,
                 })
         }
 }
@@ -49,18 +49,19 @@ const getNotice = async(req,res)=>{
                 if(!allNotice){
                 return res.status(400).json({
                         success:false,
-                        message:"notice field is empty",
+                        message:"no notice exists",
                 });
                 }
-                res.status(200).json({
+                return res.status(200).json({
                         success:true,
                         message:allNotice,
                 });
         } catch (error) {
-                res.status(400).json({
+                console.log("fail to fetch notices in noticepage: ",error);
+
+                return res.status(400).json({
                         success:false,
                         message:"fail to fetch notices in noticepage",
-                        err:error.message,
                 })
                 
         }

@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import loginImage from "../assets/login3.png";
 import { useState } from "react";
 import {useAuth} from "../store/auth";
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const {storeTokenInLs} = useAuth();
@@ -31,20 +32,23 @@ const Login = () => {
       },
       body:JSON.stringify(user),
     })
+    const res_data = await response.json();
     if(response.ok){
-      const res_data = await response.json();
+      toast.success(res_data.message);
       storeTokenInLs(res_data.token);
       setUser({
         email:"",
         password:"",
       });
       if (res_data.isAdmin) {
-        console.log('navigating to aadmin')
         navigate("/admin/dashboard");
       } 
       else {
         navigate("/");
       }
+    }
+    else{
+      toast.error(res_data.message);
     }
   }
   return (

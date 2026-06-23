@@ -1,5 +1,6 @@
 const user = require("../schema/userDb");
 const Profile = require("../schema/profileSchema");
+const cloudinary = require("../config/cloudinary");
 
 const getallusers = async (req, res) => {
   try {
@@ -18,16 +19,18 @@ const getallusers = async (req, res) => {
       })
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: wholeuser,
+      display_message: "all users fetched successfully",
     });
 
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
+    console.log("unable to fetch all users: ",error);
+
+    return res.status(500).json({
       success: false,
-      message: "Server Error",
+      message: "unable to fetch all users",
     });
   }
 };
@@ -38,26 +41,34 @@ const deleteuserac = async (req,res)=>{
                 // delete profile linked to user
                 const currentuser = await user.findOne({_id:id});
                 if(!currentuser.isAdmin){
-                        await Profile.findOneAndDelete({ user: id });
+
+                        const oldProfile = await Profile.findOneAndDelete({ user: id });
                         const accountRemoved = await user.findByIdAndDelete(id);
                         
-                        res.status(200).json({
-                                success:true,
-                                message:`account ${accountRemoved.email} has been removed from dbs`,
-                        });
+                        if(accountRemoved && oldProfile?.profileImagePublicId)
+                        
+                               await cloudinary.uploader.destroy(
+                                oldProfile.profileImagePublicId
+                        )
                         console.log(`${accountRemoved.email} has been removed from dbs`);
+
+                        return res.status(200).json({
+                                success:true,
+                                message:`user has been removed`,
+                        });
                 }
 
-                res.status(400).json({
+                return res.status(400).json({
                                 success:false,
                                 message:`admin cann't be removed`,
                         });                
 
         } catch (error) {
-                res.status(400).json({
+                console.log("error while deleting users: ",error);
+
+                return res.status(400).json({
                         success:false,
-                        message:`error while deleting users...`,
-                        err:error.message
+                        message:`error while deleting users`,
                 })
         }
 }
@@ -65,20 +76,25 @@ const deletemyac = async (req,res)=>{
         try {
                 const id = req.id;
 
-                // delete profile linked to user
-                await Profile.findOneAndDelete({ user: id });
+                        const oldProfile = await Profile.findOneAndDelete({ user: id });
+                        const accountRemoved = await user.findByIdAndDelete(id);
+                        
+                        if(accountRemoved && oldProfile?.profileImagePublicId)
+                        
+                               await cloudinary.uploader.destroy(
+                                oldProfile.profileImagePublicId
+                        )
+                        console.log(`${accountRemoved.email} has been removed from dbs`);
 
-                const accountRemoved = await user.findByIdAndDelete(id);
-                res.status(200).json({
-                        success:true,
-                        message:`your account ${accountRemoved.email} has been deleted`,
-                });
-                console.log(`${accountRemoved.email} has deleted his account`);
+                        return res.status(200).json({
+                                success:true,
+                                message:`your account is removed`,
+                        });
         } catch (error) {
-                res.status(400).json({
+                console.log("error while deleting your account: ", error);
+                return res.status(400).json({
                         success:false,
-                        message:`error while deleting users...`,
-                        err:error.message
+                        message:`error while deleting your account`,
                 })
         }
 }
@@ -87,7 +103,7 @@ const updatemyac = async (req,res)=>{
                 const id = req.id;
                 const updatedBody = req.body;
                 if(!updatedBody){
-                        res.status(400).json({
+                        return res.status(400).json({
                         success:false,
                         message:"please insert updated user data, update failed..",
                         err:error.message,
@@ -98,15 +114,16 @@ const updatemyac = async (req,res)=>{
                         updatedBody,
                         {new:true}
                 );
-                res.status(200).json({
+                return res.status(200).json({
                         success:true,
                         message:"user updated successfully",
                 })
                 
         } catch (error) {
-              res.status(400).json({
+                console.log("error while updating account: ", error);
+              return res.status(400).json({
                         success:false,
-                        message:"error while updating user, update failed..",
+                        message:"error while updating user",
                         err:error.message,
                 })  
         }

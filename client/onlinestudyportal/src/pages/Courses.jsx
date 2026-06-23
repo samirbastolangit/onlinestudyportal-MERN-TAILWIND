@@ -80,7 +80,7 @@ const Courses = () => {
 
               <img
                 // If thumbnail doesn't exist, use local image
-                src={course.thumbnail || courseImage}
+                src={course.thumbnailImg || courseImage}
                 alt={course.title}
                 className="w-full h-52 object-cover"
               />

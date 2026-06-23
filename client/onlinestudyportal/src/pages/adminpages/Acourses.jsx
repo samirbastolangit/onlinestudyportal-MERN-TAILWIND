@@ -1,4 +1,4 @@
-// Acourses.jsx
+// Acourses.jsx 
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import AddCourse from "../../components/admincomponents/Aaddcourse";
 import { useState, useEffect } from "react";
@@ -9,6 +9,7 @@ const rcourseuri = "http://localhost:3000/api/courses/admin/rcourses/";
 import { useAuth } from "../../store/auth";
 const Acourses = () => {
         const {token} = useAuth();
+
         //function to fetch all courses
         const [courses,setCourses] = useState([]);
         const getCourses = async ()=>{
@@ -98,8 +99,8 @@ const Acourses = () => {
             className="bg-white rounded-xl shadow-md hover:shadow-xl duration-300 overflow-hidden"
           >
             <img
-              src={course.thumbnail}
-              alt={course.title}
+              src={course.thumbnailImg}
+              alt="course thumbnail img"
               className="w-full h-52 object-cover"
             />
 

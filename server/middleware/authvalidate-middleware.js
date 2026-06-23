@@ -5,7 +5,7 @@ const authvalidateMiddleware = (schema) => async (req,res,next)=>{
         next();
  } catch (err) {
         console.log(`type of err: ${typeof(err)} and value of err:${err.issues[0].message}`);
-        res.status(400).json({
+        return res.status(400).json({
                 message:err.issues[0].message
         });
  }

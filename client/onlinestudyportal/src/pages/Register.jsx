@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import registerImage from "../assets/form2.png";
 import { useState } from "react";
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -21,14 +22,19 @@ const Register = () => {
       },
       body:JSON.stringify(user),
     });
+    const data = await response.json();
     if(response.ok){
+      toast.success(data.message);
       setUser({
         fullname:"",
         email:"",
         password:""
       });
       navigate("/login");
-    }    
+    }  
+    else{
+      toast.error(data.message);
+    }  
   }
   const handleRInput = (e)=>{
     let name = e.target.name;

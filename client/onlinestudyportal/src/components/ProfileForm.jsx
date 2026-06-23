@@ -5,6 +5,7 @@ import { useState } from "react";
 const ProfileForm = ({ profile, onSave, onClose,refreshProfile }) => {
 
   const [profileImage, setProfileImage] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [form, setForm] = useState({
     age: profile?.age || "",
@@ -36,8 +37,12 @@ const handleImage = (e) => {
   );
 };
 const submitHandler =async () => {
+ 
+    if (isSaving) return;
 
-  const formdata = new FormData();
+  try{
+    setIsSaving(true);
+const formdata = new FormData();
 
   formdata.append(
     "age",
@@ -68,6 +73,11 @@ const submitHandler =async () => {
   
   await onSave(formdata);
   await refreshProfile();
+  }
+  finally{
+    setIsSaving(false)
+  }
+  
   };
 
   return (
@@ -254,18 +264,28 @@ const submitHandler =async () => {
       <div className="flex flex-col sm:flex-row gap-3">
 
         <button
-          onClick={submitHandler}
-          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium"
-        >
-          Save Profile
-        </button>
+  onClick={submitHandler}
+  disabled={isSaving}
+  className={`flex-1 text-white py-3 rounded-lg font-medium
+    ${isSaving
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700"
+    }`}
+>
+  {isSaving ? "Saving..." : "Save Profile"}
+</button>
 
         <button
-          onClick={onClose}
-          className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-3 rounded-lg font-medium"
-        >
-          Cancel
-        </button>
+  onClick={onClose}
+  disabled={isSaving}
+  className={`flex-1 text-white py-3 rounded-lg font-medium
+    ${isSaving
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-gray-600 hover:bg-gray-700"
+    }`}
+>
+  Cancel
+</button>
 
       </div>
 

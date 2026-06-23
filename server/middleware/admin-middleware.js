@@ -12,11 +12,10 @@ try {
                 next();
         }
 catch(error){
-        console.error("error in admin page");
-                res.status(400).json({
+        console.error("error in admin page: ", error);
+                return res.status(400).json({
                         success:false,
                         message:`unauthorized users`,
-                        err:error.message
                 })
 }
 }
