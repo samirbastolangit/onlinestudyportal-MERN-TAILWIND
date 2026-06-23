@@ -62,6 +62,7 @@ const Profile = () => {
         toast.error("error occur while adding/updating profile");
       }
     } catch (error) {
+      toast.error("error occur while adding/updating profile");
       console.error(error);
     }
   };

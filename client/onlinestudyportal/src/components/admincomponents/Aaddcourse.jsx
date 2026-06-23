@@ -2,10 +2,12 @@ import { useState } from "react";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
 const pcourseuri = "http://localhost:3000/api/courses/admin/pcourses";
 import { useAuth } from "../../store/auth";
+import { toast } from 'react-toastify';
 
 const AddCourse = ({ onClose, refreshCourses }) => {
   const {token} = useAuth();
   
+  const [isSaving, setIsSaving] = useState(false);
   const [courseThumbnail, setCourseThumbnail] = useState(null);
   const [courseThumbnailPreview, setCourseThumbnailPreview] = useState(null);
 
@@ -34,7 +36,9 @@ const handleImage = (e) => {
 };
 
   const handleSubmit = async (e) => {
+    if (isSaving) return;
     try { 
+        setIsSaving(true);
         e.preventDefault();
 
         const formdata = new FormData();
@@ -60,13 +64,20 @@ const handleImage = (e) => {
       });
       if(response.ok){
         // const data = await response.json();
-
+        toast.success("Course has been added");
         onClose();
         refreshCourses();
       }
+      else{
+        toast.error("Problem while adding course, might be due to invalid input");
+      }
     } 
     catch (error) {
+      toast.error("Problem while adding course, might be due to invalid input");
       console.error(error);
+    }
+    finally{
+      setIsSaving(false);
     }
 
   };
@@ -124,7 +135,7 @@ const handleImage = (e) => {
             <div>
 
               <label className="font-semibold block mb-2">
-                Course Thumbnail
+                Course Thumbnail <span className="text-red-400 text-[14px]">"Max resolution 600*600 and file size 500kb"</span>
               </label>
 <label className="border-2 border-dashed border-gray-300 rounded-xl h-40 flex flex-col justify-center items-center cursor-pointer hover:border-blue-500 transition">
 
@@ -204,11 +215,11 @@ const handleImage = (e) => {
                 </label>
 
                 <input
-                  type="text"
+                  type="number"
                   name="duration"
                   value={courseData.duration}
                   onChange={handleChange}
-                  placeholder="Example: 3 Months"
+                  placeholder="Months value in digit"
                   required
                   className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -222,11 +233,11 @@ const handleImage = (e) => {
                 </label>
 
                 <input
-                  type="text"
+                  type="number"
                   name="fee"
                   value={courseData.fee}
                   onChange={handleChange}
-                  placeholder="Example: Rs. 5000"
+                  placeholder="NRs. value in digit"
                   required
                   className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -239,19 +250,28 @@ const handleImage = (e) => {
         <div className="border-t bg-gray-50 p-4 flex flex-col sm:flex-row justify-end gap-3 flex-shrink-0">
 
           <button
-            type="button"
-            onClick={onClose}
-            className="px-6 py-2 rounded-lg bg-gray-300 hover:bg-gray-400"
-            >
-            Cancel
-          </button>
+  type="submit"
+  disabled={isSaving}
+  className={`flex-1 text-white py-3 rounded-lg font-medium
+    ${isSaving
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700"
+    }`}
+>
+  {isSaving ? "Adding..." : "Add Course"}
+</button>
 
-          <button
-            type="submit"
-            className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
-            >
-            Add Course
-          </button>
+        <button
+  onClick={onClose}
+  disabled={isSaving}
+  className={`flex-1 text-white py-3 rounded-lg font-medium
+    ${isSaving
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-gray-600 hover:bg-gray-700"
+    }`}
+>
+  Cancel
+</button>
 
         </div>
             </form>

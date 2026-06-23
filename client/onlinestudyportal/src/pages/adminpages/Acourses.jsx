@@ -5,10 +5,14 @@ import { useState, useEffect } from "react";
 import UpdateCourse from "../../components/admincomponents/Aupdatecourse";
 const getcourseuri = "http://localhost:3000/api/courses/";
 const rcourseuri = "http://localhost:3000/api/courses/admin/rcourses/";
-
+import { toast } from "react-toastify";
 import { useAuth } from "../../store/auth";
+
 const Acourses = () => {
         const {token} = useAuth();
+
+        const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [courseToDelete, setCourseToDelete] = useState(null);
 
         //function to fetch all courses
         const [courses,setCourses] = useState([]);
@@ -30,6 +34,11 @@ const Acourses = () => {
     getCourses();
   }, []);
   
+  const confirmDeleteCourse = (id) => {
+  setCourseToDelete(id);
+  setShowDeleteModal(true);
+};
+
   //delete course function
   const deleteCourse = async (id) => {
     try {
@@ -40,11 +49,14 @@ const Acourses = () => {
         }
       });
       if(response.ok){
-        const msg = await response.json();
-        console.log(msg.message);
+        toast.success("Course has been deleted");
         getCourses();
       }
+      else{
+        toast.error("deleting course failed");
+      }
     } catch (error) {
+      toast.error("deleting course failed");
       console.error(error);
     }
   };
@@ -152,12 +164,12 @@ const Acourses = () => {
   )
 }
                 <button
-                  onClick={() => deleteCourse(course._id)}
-                  className="flex-1 flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition"
-                >
-                  <FaTrash />
-                  Delete
-                </button>
+  onClick={() => confirmDeleteCourse(course._id)}
+  className="flex-1 flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition"
+>
+  <FaTrash />
+  Delete
+</button>
 
               </div>
             </div>
@@ -165,6 +177,42 @@ const Acourses = () => {
         ))}
 
       </div>
+      {showDeleteModal && (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 className="text-xl font-bold mb-3">
+        Delete Course?
+      </h2>
+
+      <p className="text-gray-600 mb-5">
+        This action cannot be undone.
+      </p>
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => {
+            setShowDeleteModal(false);
+            setCourseToDelete(null);
+          }}
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={async () => {
+            await deleteCourse(courseToDelete);
+            setShowDeleteModal(false);
+            setCourseToDelete(null);
+          }}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          Delete Now
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

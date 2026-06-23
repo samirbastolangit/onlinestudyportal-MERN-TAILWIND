@@ -1,11 +1,14 @@
 const deletemyacuri = "http://localhost:3000/api/users/deletemyac";
 import { useNavigate } from "react-router-dom";
 import {useAuth} from "../store/auth";
+import { toast } from 'react-toastify';
+import { useState } from "react";
 
 const ProfileView = ({ user, profile, openForm }) => {
   const {token} = useAuth();
   const navigate = useNavigate();
 
+  const [showModal, setShowModal] = useState(false);
   const deletemyac = async()=>{
     try {
       const response = await fetch(deletemyacuri,{
@@ -15,9 +18,14 @@ const ProfileView = ({ user, profile, openForm }) => {
         }
       });
       if(response.ok){
+       toast.success("Your account is now deleted");
        navigate("/logout");
       }
+      else{
+        toast.error("Problem while deleting account, try later");
+      }
     } catch (error) {
+      toast.error("Problem while deleting account, try later");
      console.log(error);
     }
   }
@@ -90,9 +98,47 @@ const ProfileView = ({ user, profile, openForm }) => {
               No profile information available.
             </p>
           )}
-          <button className="bg-red-600 text-white px-5 py-2 rounded-lg hover:text-black" onClick={deletemyac}>Delete Account</button>
+
+          <button
+  className="bg-red-600 text-white px-5 py-2 rounded-lg hover:text-black"
+  onClick={() => setShowModal(true)}
+>
+  Delete Account
+</button>
         </div>
       </div>
+      {showModal && (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+      <h2 className="text-xl font-bold mb-3">
+        Delete Account?
+      </h2>
+
+      <p className="text-gray-600 mb-5">
+        This action cannot be undone.
+      </p>
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={() => setShowModal(false)}
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={async () => {
+            setShowModal(false);
+            await deletemyac();
+          }}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          Delete Now
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </section>
   );
 };

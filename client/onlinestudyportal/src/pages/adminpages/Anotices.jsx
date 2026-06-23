@@ -4,6 +4,7 @@ import AddNotice from "../../components/admincomponents/Aaddnotice";
 const getnoticeuri = "http://localhost:3000/api/notices/";
 const rnoticeruri = "http://localhost:3000/api/notices/admin/rnotice/";
 import {useAuth} from "../../store/auth";
+import { toast } from "react-toastify";
 
 const ANotices = () => {
   const {token} = useAuth();
@@ -39,9 +40,14 @@ const deleteNotice = async (id)=>{
         }
       });
       if(response.ok){
+        toast.success("notice deleted successfully");
         getNotices();
       }
-  } catch (error) {
+      else{
+        toast.error("error while deleting notice");
+      }
+    } catch (error) {
+    toast.error("error while deleting notice");
     console.error(error);
   }
 }

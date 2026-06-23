@@ -4,8 +4,12 @@ const getalluseruri = "http://localhost:3000/api/users/admin/users";
 const ruseruri = "http://localhost:3000/api/users/admin/deleteuserac/";
 
 import { useAuth } from "../../store/auth";
+import { toast } from "react-toastify";
 const Ausers = () => {
         const {token} = useAuth();
+
+        const [showDeleteModal, setShowDeleteModal] = useState(false);
+const [userToDelete, setUserToDelete] = useState(null);
         //function to fetch all users
         const [users,setUsers] = useState([]);
         const getUsers = async ()=>{
@@ -29,6 +33,10 @@ const Ausers = () => {
     getUsers();
   }, []);
   
+  const confirmDeleteUser = (user) => {
+  setUserToDelete(user);
+  setShowDeleteModal(true);
+};
   //delete user function
   const deleteUser = async (id) => {
     try {
@@ -39,9 +47,14 @@ const Ausers = () => {
         }
       });
       if(response.ok){
+        toast.success("user removed successfully");
         getUsers();
       }
+      else{
+        toast.error("admin user cann't be removed");
+      }
     } catch (error) {
+      toast.error("problem while removing user");
       console.error(error);
     }
   };  
@@ -91,17 +104,64 @@ const Ausers = () => {
                 </div>
 
                 <button
-                  onClick={() => deleteUser(user._id)}
-                  className="flex-1 flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition"
-                >
-                  <FaTrash />
-                  Delete
-                </button>
+  onClick={() => confirmDeleteUser(user)}
+  className="flex-1 flex justify-center items-center gap-2 bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition"
+>
+  <FaTrash />
+  Delete
+</button>
 
               </div>
         ))}
 
       </div>
+      {showDeleteModal && (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+
+      <h2 className="text-xl font-bold mb-3">
+        Delete User?
+      </h2>
+
+      <p className="text-gray-600 mb-2">
+        Are you sure you want to delete:
+      </p>
+
+      <p className="font-semibold mb-5">
+        {userToDelete?.fullname}
+      </p>
+
+      <p className="text-sm text-gray-500 mb-5">
+        {userToDelete?.email}
+      </p>
+
+      <div className="flex justify-end gap-3">
+
+        <button
+          onClick={() => {
+            setShowDeleteModal(false);
+            setUserToDelete(null);
+          }}
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={async () => {
+            await deleteUser(userToDelete._id);
+            setShowDeleteModal(false);
+            setUserToDelete(null);
+          }}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          Delete Now
+        </button>
+
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

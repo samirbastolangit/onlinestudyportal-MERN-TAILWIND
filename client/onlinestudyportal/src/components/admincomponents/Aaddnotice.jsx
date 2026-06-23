@@ -2,10 +2,12 @@ import { useState } from "react";
 import { FiX } from "react-icons/fi";
 const pnoticeuri = "http://localhost:3000/api/notices/admin/addnotice";
 import { useAuth } from "../../store/auth";
+import { toast } from 'react-toastify';
 
 const AddNotice = ({ onClose, refreshNotices }) => {
   const {token} = useAuth();
 
+  const [isSaving,setIsSaving] = useState(false);
   const [notice, setNotice] = useState({
     title: "",
     description: "",
@@ -22,7 +24,9 @@ const AddNotice = ({ onClose, refreshNotices }) => {
   };
 
   const handleSubmit = async(e) => {
+    if (isSaving) return;
     try {  
+      setIsSaving(true);
       e.preventDefault();
       
       const response = await fetch(pnoticeuri,{
@@ -34,13 +38,21 @@ const AddNotice = ({ onClose, refreshNotices }) => {
         body: JSON.stringify(notice)
       });
       if(response.ok){
+        toast.success("Notice has been added");
         onClose();
         refreshNotices();
       }
-
+      else{
+        toast.error("Cann't add notice.May be invalid input field");
+      }
+      
     } 
     catch (error) {
       console.error(error);
+      toast.error("Cann't add notice.May be invalid input field");
+    }
+    finally{
+      isSaving(false);
     }
   };
 
@@ -132,19 +144,28 @@ const AddNotice = ({ onClose, refreshNotices }) => {
         <div className="border-t bg-gray-50 px-6 py-5 flex justify-end gap-4">
 
           <button
-            onClick={onClose}
-            type="button"
-            className="px-8 py-3 rounded-xl bg-gray-300 hover:bg-gray-400 font-semibold"
-            >
-            Cancel
-          </button>
+  type="submit"
+  disabled={isSaving}
+  className={`flex-1 text-white py-3 rounded-lg font-medium
+    ${isSaving
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-blue-600 hover:bg-blue-700"
+    }`}
+>
+  {isSaving ? "Adding..." : "Add Notice"}
+</button>
 
-          <button
-            type="submit"
-            className="px-8 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-            >
-            Add Notice
-          </button>
+        <button
+  onClick={onClose}
+  disabled={isSaving}
+  className={`flex-1 text-white py-3 rounded-lg font-medium
+    ${isSaving
+      ? "bg-gray-400 cursor-not-allowed"
+      : "bg-gray-600 hover:bg-gray-700"
+    }`}
+>
+  Cancel
+</button>
 
         </div>
             </form>
