@@ -23,7 +23,7 @@ const Alogin = () => {
     e.preventDefault();
 
     // connecting with backend and dbs
-    const uri = "http://localhost:3000/api/auth/login";
+    const uri = import.meta.env.VITE_ADMIN_LOGIN_URI;
     const response = await fetch(uri,{
       method:'POST',
       headers:{
@@ -42,7 +42,7 @@ const Alogin = () => {
     }
   }
   return (
-    <section className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-18">
+    <section className="min-h-screen bg-gray-100 flex justify-center px-4 py-8">
       <div className="bg-white shadow-xl rounded-2xl overflow-hidden max-w-5xl w-full grid grid-cols-1 md:grid-cols-2">
 
         {/* Left Side */}

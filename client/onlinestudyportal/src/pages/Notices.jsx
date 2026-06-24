@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const Notice = () => {
   const [noticeData, setNoticeData] = useState([]);
   const [search, setSearch] = useState("");
-  const uri = "http://localhost:3000/api/notices/";
+  const uri = import.meta.env.VITE_GET_NOTICE_URI;
 
   const getNotice = async ()=>{
     try {

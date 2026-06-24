@@ -1,8 +1,8 @@
 import { FiPlus, FiEdit2, FiTrash2, FiCalendar, FiUser } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import AddNotice from "../../components/admincomponents/Aaddnotice";
-const getnoticeuri = "http://localhost:3000/api/notices/";
-const rnoticeruri = "http://localhost:3000/api/notices/admin/rnotice/";
+const getnoticeuri = import.meta.env.VITE_ADMIN_GET_NOTICE_URI;
+const rnoticeruri = import.meta.env.VITE_ADMIN_DELETE_NOTICE_URI;
 import {useAuth} from "../../store/auth";
 import { toast } from "react-toastify";
 
@@ -63,7 +63,7 @@ const deleteNotice = async (id)=>{
             Notice Management
           </h1>
           <p className="text-slate-500 mt-1">
-            Create, update and manage notices.
+            Create new or delete existing notices.
           </p>
         </div>
 

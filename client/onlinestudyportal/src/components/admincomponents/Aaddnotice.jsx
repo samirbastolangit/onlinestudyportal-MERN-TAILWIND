@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FiX } from "react-icons/fi";
-const pnoticeuri = "http://localhost:3000/api/notices/admin/addnotice";
+const pnoticeuri = import.meta.env.VITE_ADMIN_POST_NOTICE_URI;
 import { useAuth } from "../../store/auth";
 import { toast } from 'react-toastify';
 

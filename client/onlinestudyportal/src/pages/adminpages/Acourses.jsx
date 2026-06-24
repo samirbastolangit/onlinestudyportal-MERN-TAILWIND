@@ -3,8 +3,8 @@ import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import AddCourse from "../../components/admincomponents/Aaddcourse";
 import { useState, useEffect } from "react";
 import UpdateCourse from "../../components/admincomponents/Aupdatecourse";
-const getcourseuri = "http://localhost:3000/api/courses/";
-const rcourseuri = "http://localhost:3000/api/courses/admin/rcourses/";
+const getcourseuri = import.meta.env.VITE_ADMIN_GET_COURSE_URI;
+const rcourseuri = import.meta.env.VITE_ADMIN_DELETE_COURSE_URI;
 import { toast } from "react-toastify";
 import { useAuth } from "../../store/auth";
 

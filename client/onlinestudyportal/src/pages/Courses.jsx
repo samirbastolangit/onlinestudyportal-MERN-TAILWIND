@@ -8,7 +8,7 @@ const Courses = () => {
   // Search text
   const [search, setSearch] = useState("");
 
-  const uri = "http://localhost:3000/api/courses/";
+  const uri = import.meta.env.VITE_GET_COURSE_URI;
 
   // Function to fetch all courses
   const getCourses = async () => {

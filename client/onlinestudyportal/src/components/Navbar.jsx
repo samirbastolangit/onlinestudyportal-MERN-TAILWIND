@@ -75,24 +75,24 @@ const Navbar = () => {
         {menuOpen && (
           <div className="md:hidden bg-white shadow-lg">
             <nav className="flex flex-col p-5 gap-4 font-medium">
-              <NavLink to="/courses" className='hover:text-blue-600'>Our Courses</NavLink>
-              <NavLink to="/notices" className='hover:text-blue-600'>Notices</NavLink>
+              <NavLink to="/courses" className='hover:text-blue-600 border-b border-gray-200' onClick={() => setMenuOpen(!menuOpen)}>Our Courses</NavLink>
+              <NavLink to="/notices" className='hover:text-blue-600 border-b border-gray-200' onClick={() => setMenuOpen(!menuOpen)}>Notices</NavLink>
               {isLoggedIn ?
               <>
-<NavLink to="/logout" className='hover:text-blue-600'>Logout</NavLink>
-              <div className="flex items-center gap-3 pt-2 border-t">
+<NavLink to="/logout" className='hover:text-blue-600 border-b border-gray-200' onClick={() => setMenuOpen(!menuOpen)}>Logout</NavLink>
+              <div className="flex items-center gap-3 pt-2">
                 <img
                   src={profileicon}
                   alt="profile"
                   className="w-10 h-10 rounded-full"
                 />
-                <NavLink to="/myprofile" className='hover:text-blue-600'>Profile</NavLink>
+                <NavLink to="/myprofile" className='hover:text-blue-600' onClick={() => setMenuOpen(!menuOpen)}>Profile</NavLink>
               </div>
 
               </>:
               <>
-              <NavLink to="/register" className='hover:text-blue-600'>Register</NavLink>
-              <NavLink to="/login" className='hover:text-blue-600'>Login</NavLink>
+              <NavLink to="/register" className='hover:text-blue-600 border-b border-gray-200' onClick={() => setMenuOpen(!menuOpen)} >Register</NavLink>
+              <NavLink to="/login" className='hover:text-blue-600' onClick={() => setMenuOpen(!menuOpen)}>Login</NavLink>
               </>}
 
             </nav>

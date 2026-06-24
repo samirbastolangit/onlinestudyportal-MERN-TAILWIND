@@ -14,7 +14,7 @@ const Register = () => {
     e.preventDefault();
 
     //connecting with backend and dbs
-    const uri = "http://localhost:3000/api/auth/register";
+    const uri = import.meta.env.VITE_REGISTER_URI;
     const response = await fetch(uri,{
       method:"POST",
       headers:{

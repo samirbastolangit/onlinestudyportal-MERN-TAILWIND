@@ -5,8 +5,8 @@ import ProfileForm from "../components/ProfileForm";
 import { toast } from 'react-toastify';
 
 
-const getProfileURI = "http://localhost:3000/api/profile/readmyprofile";
-const updateProfileURI = "http://localhost:3000/api/profile/add";
+const getProfileURI = import.meta.env.VITE_GET_PROFILE_URI;
+const updateProfileURI = import.meta.env.VITE_PUT_PROFILE_URI;
 
 const Profile = () => {
   const { user, token } = useAuth();

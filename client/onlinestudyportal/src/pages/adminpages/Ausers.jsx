@@ -1,7 +1,7 @@
 import { FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import { useState, useEffect } from "react";
-const getalluseruri = "http://localhost:3000/api/users/admin/users";
-const ruseruri = "http://localhost:3000/api/users/admin/deleteuserac/";
+const getalluseruri = import.meta.env.VITE_ADMIN_GET_ALLUSERS_URI;
+const ruseruri = import.meta.env.VITE_ADMIN_DELETE_USER_URI;
 
 import { useAuth } from "../../store/auth";
 import { toast } from "react-toastify";

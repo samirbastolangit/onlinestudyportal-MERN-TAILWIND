@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault();
 
     // connecting with backend and dbs
-    const uri = "http://localhost:3000/api/auth/login";
+    const uri = import.meta.env.VITE_LOGIN_URI;
     const response = await fetch(uri,{
       method:'POST',
       headers:{

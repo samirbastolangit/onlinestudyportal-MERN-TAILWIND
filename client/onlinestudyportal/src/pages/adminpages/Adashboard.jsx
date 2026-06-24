@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { useEffect, useState } from "react";
 
-const dashboarduri = "http://localhost:3000/api/dashboard/admin/get";
+const dashboarduri = import.meta.env.VITE_ADMIN_GET_DASHBOARD_URI;
 
 const Adashboard = () => {
   const { token } = useAuth();

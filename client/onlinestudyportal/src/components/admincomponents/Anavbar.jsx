@@ -62,11 +62,11 @@ const Anavbar = () => {
         {menuOpen && (
           <div className="md:hidden bg-white shadow-lg">
             <nav className="flex flex-col p-5 gap-4 font-medium">
-              <NavLink to="/admin/dashboard" className='hover:text-blue-600'>Dashboard</NavLink>
-              <NavLink to="/admin/courses" className='hover:text-blue-600'>Courses</NavLink>
-              <NavLink to="/admin/notices" className='hover:text-blue-600'>Notices</NavLink>
-              <NavLink to="/admin/users" className='hover:text-blue-600'>Users</NavLink>
-              <NavLink to="/admin/logout" className='hover:text-blue-600'>Logout</NavLink>
+              <NavLink to="/admin/dashboard" onClick={() => setMenuOpen(!menuOpen)} className='hover:text-blue-600 border-b border-gray-200'>Dashboard</NavLink>
+              <NavLink to="/admin/courses" onClick={() => setMenuOpen(!menuOpen)} className='hover:text-blue-600 border-b border-gray-200'>Courses</NavLink>
+              <NavLink to="/admin/notices" onClick={() => setMenuOpen(!menuOpen)} className='hover:text-blue-600 border-b border-gray-200'>Notices</NavLink>
+              <NavLink to="/admin/users" onClick={() => setMenuOpen(!menuOpen)} className='hover:text-blue-600 border-b border-gray-200'>Users</NavLink>
+              <NavLink to="/admin/logout" onClick={() => setMenuOpen(!menuOpen)} className='hover:text-blue-600'>Logout</NavLink>
 
             </nav>
           </div>

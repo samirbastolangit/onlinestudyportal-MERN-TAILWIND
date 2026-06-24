@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaTimes, FaCloudUploadAlt } from "react-icons/fa";
-const ucourseuri = "http://localhost:3000/api/courses/admin/ucourses/";
+const ucourseuri = import.meta.env.VITE_ADMIN_PUT_COURSE_URI;
 import { useAuth } from "../../store/auth";
 import { toast } from 'react-toastify';
 

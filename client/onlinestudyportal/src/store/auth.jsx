@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   };
   const userAuthentication = async () => {
   try {
-    const uri = "http://localhost:3000/api/users/";
+    const uri = import.meta.env.VITE_GET_USER_URI;
     const response = await fetch(uri,{
       method:"GET",
       headers:{
