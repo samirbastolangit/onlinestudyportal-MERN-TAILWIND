@@ -22,10 +22,6 @@ const connectDb = require("./db");
 
 app.use(express.json());
 
-app.use("/uploads",
-    express.static("assets/uploads")
-);
-
 app.get("/",(req,res)=>{
         res.send("hi")
 });

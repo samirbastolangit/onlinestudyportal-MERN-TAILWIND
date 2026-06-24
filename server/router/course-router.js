@@ -14,12 +14,11 @@ router.route("/admin/ucourses/:id").put(authmiddleware,adminMiddleware,
         upload.single("courseThumbnail"),
         validateImageResolution,
         controller.updateCourses);
+        
 router.route("/admin/rcourses/:id").delete(authmiddleware,adminMiddleware,controller.deleteCourses);
-router.route("/admin/rfeed/:id").delete(authmiddleware,adminMiddleware, controller.removefeedmessage);
 
 router.route("/").get(controller.listCourses);
-router.route("/addfeed").post(authmiddleware, controller.addfeedmessage);
-router.route("/viewfeed").get(controller.viewfeedmessage);
+
 
 
 module.exports = router;

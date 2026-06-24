@@ -96,7 +96,7 @@ const Notice = () => {
                 </span>
 
                 <span>
-                  <strong>Published:</strong> {notice.publishedDate}
+                  <strong>Published:</strong> {new Date(notice.publishedDate).toLocaleDateString()}
                 </span>
 
               </div>

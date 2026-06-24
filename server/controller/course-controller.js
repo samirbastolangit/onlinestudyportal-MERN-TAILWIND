@@ -1,5 +1,4 @@
 const courseModel = require("../schema/courseSchema");
-const courseFeedback = require("../schema/courseFeedback");
 
 const uploadToCloudinary = require("../services/uploadToCloudinary");
 const cloudinary = require("../config/cloudinary");
@@ -120,70 +119,4 @@ const deleteCourses = async(req,res)=>{
                 });
         }
 }
-
-
-
-const addfeedmessage = async (req,res)=>{
-        try {
-                const {email,feedmessage} = req.body;
-                if(!feedmessage){
-                        return res.status(400).json({
-                                success:false,
-                                message:"fail to add feed message"
-                        })
-                }
-                const msg = await courseFeedback.create({email,feedmessage});
-                return res.status(200).json({
-                        success:true,
-                        message:"feed message add successfully",
-                        feed:msg
-                });
-        } catch (err) {
-                console.log("error while adding feedmessage:",err);
-                return res.status(400).json({
-                        success:false,
-                        message:"fail to add feed messages",
-                })
-        }
-};
-const viewfeedmessage = async (req,res)=>{
-        try {
-                const feedmessage = await courseFeedback.find();
-                if(feedmessage.length == 0){
-                        return res.status(400).json({
-                                success:false,
-                                message:"feed message is empty",
-                        })
-                }
-                return res.status(200).json({
-                        success:true,
-                        message:feedmessage,
-                })
-        } catch (error) {
-                console.log("error while fetching feedmessage:",error);
-                return res.status(400).json({
-                        success:false,
-                        message:"fail to view feed messages",
-                        error:error,
-                })
-        }
-}
-const removefeedmessage = async (req,res)=>{
-        try {
-                const id = req.params.id;
-                await courseFeedback.findByIdAndDelete(id);
-                return res.status(200).json({
-                        success:true,
-                        message:`feed message successfully deleted`,
-                });
-        } 
-        catch (error) {
-                console.log("error while deleting feedback: ",error);
-                return res.status(400).json({
-                        success:false,
-                        message:"error while deleting feedback",
-                });
-        }
-}
-module.exports = {addCourses,listCourses, updateCourses, deleteCourses,
-        addfeedmessage, viewfeedmessage, removefeedmessage};
+module.exports = {addCourses,listCourses, updateCourses, deleteCourses};

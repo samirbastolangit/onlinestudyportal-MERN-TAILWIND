@@ -3,11 +3,6 @@ import { useAuth } from "../../store/auth";
 
 const AdminProtectedRoute = () => {
   const { isLoggedIn, isAdmin, loading } = useAuth();
-  console.log(
-  loading,
-  isLoggedIn,
-  isAdmin
-);
 
   if (loading) {
     return <h1>Loading...</h1>;

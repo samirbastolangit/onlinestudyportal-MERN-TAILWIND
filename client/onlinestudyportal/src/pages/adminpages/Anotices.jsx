@@ -107,7 +107,7 @@ const deleteNotice = async (id)=>{
 
               <div className="flex items-center gap-2">
                 <FiCalendar />
-                <span>{notice.publishedDate}</span>
+                <span>{new Date(notice.publishedDate).toLocaleDateString()}</span>
               </div>
             </div>
 

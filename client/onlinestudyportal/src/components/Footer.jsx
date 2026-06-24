@@ -92,7 +92,7 @@ const Footer = () => {
 
       {/* ================= BOTTOM BAR ================= */}
       <div className="border-t border-gray-700 py-4 text-center text-gray-400 text-sm">
-        © {new Date().getFullYear()} Online Tutor. All rights reserved.
+        © {new Date().getFullYear()} developed by B Samir.
       </div>
 
     </footer>

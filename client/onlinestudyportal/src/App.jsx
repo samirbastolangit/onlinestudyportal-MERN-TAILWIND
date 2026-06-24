@@ -69,7 +69,6 @@ const App = ()=>{
         <Route path="/admin/courses" element={<Acourses />} />
         <Route path="/admin/notices" element={<ANotices />} />
         <Route path="/admin/users" element={<Ausers />} />
-        <Route path="/admin/feedback" element={<Afeedback />} />
         <Route path="/admin/logout" element={<Alogout />} />
 
       </Route>

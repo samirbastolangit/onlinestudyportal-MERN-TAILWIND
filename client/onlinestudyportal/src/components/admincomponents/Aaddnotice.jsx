@@ -52,7 +52,7 @@ const AddNotice = ({ onClose, refreshNotices }) => {
       toast.error("Cann't add notice.May be invalid input field");
     }
     finally{
-      isSaving(false);
+      setIsSaving(false);
     }
   };
 
