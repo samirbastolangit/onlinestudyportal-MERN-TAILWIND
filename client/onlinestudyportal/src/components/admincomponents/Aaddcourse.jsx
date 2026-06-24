@@ -143,7 +143,7 @@ const handleImage = (e) => {
         <img
             src={courseThumbnailPreview}
             alt="thumbnail preview"
-            className="h-full w-full object-cover rounded-xl"
+            className="h-full w-full object-contain rounded-xl"
         />
     ) : (
         <>

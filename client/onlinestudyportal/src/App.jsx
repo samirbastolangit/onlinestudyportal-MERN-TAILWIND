@@ -29,7 +29,6 @@ import Acourses from "./pages/adminpages/Acourses";
 import ANotices from "./pages/adminpages/Anotices";
 import Ausers from "./pages/adminpages/Ausers";
 import Alogout from "./pages/adminpages/Alogout";
-import Afeedback from "./pages/adminpages/Afeedback";
 
 const App = ()=>{
   return <>

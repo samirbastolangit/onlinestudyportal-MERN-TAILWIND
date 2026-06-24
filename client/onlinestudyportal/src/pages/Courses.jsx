@@ -82,7 +82,7 @@ const Courses = () => {
                 // If thumbnail doesn't exist, use local image
                 src={course.thumbnailImg || courseImage}
                 alt={course.title}
-                className="w-full h-52 object-cover"
+                className="w-full h-52 object-contain"
               />
 
               {/* Card Body */}

@@ -113,7 +113,7 @@ const [courseToDelete, setCourseToDelete] = useState(null);
             <img
               src={course.thumbnailImg}
               alt="course thumbnail img"
-              className="w-full h-52 object-cover"
+              className="w-full h-52 object-contain"
             />
 
             <div className="p-5">

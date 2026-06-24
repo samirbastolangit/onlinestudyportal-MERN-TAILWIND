@@ -92,7 +92,6 @@ const formdata = new FormData();
       <h2 className="text-2xl font-bold">
         {profile ? "Update Profile" : "Add Profile"}
       </h2>
-
       <button
         onClick={onClose}
         className="text-2xl font-bold text-gray-500 hover:text-black"
@@ -121,7 +120,7 @@ const formdata = new FormData();
 
         <label className="mt-4 cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
 
-          Upload Image
+          Upload Image 
 
           <input
             type="file"
@@ -129,8 +128,8 @@ const formdata = new FormData();
             className="hidden"
             onChange={handleImage}
           />
-
         </label>
+  <span className="text-[14px] font-bold text-red-400">" upload image file with size less than 500 and max resollution 600*600 "</span>
 
       </div>
 
