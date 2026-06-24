@@ -5,7 +5,7 @@ const app = express();
 //solving cors issue
 const cors = require("cors");
 const corsOptions= {
-        origin:"http://localhost:5173" ,
+        origin:process.env.CLIENT_URL ,
         methods:"POST,PUT,GET,PATCH,DELETE",
         credentials:true,
 };
@@ -33,7 +33,14 @@ app.use("/api/users",userRouter);
 app.use("/api/profile",profileRouter);
 app.use("/api/dashboard",dashboardRouter);
 
-connectDb();
-app.listen(process.env.SERVER_PORT,()=>{
-        console.log(`server started on port ${process.env.SERVER_PORT}`)
-})
+const PORT = process.env.PORT || 5000;
+
+connectDb()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server started on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Failed to connect DB:", err);
+  });
